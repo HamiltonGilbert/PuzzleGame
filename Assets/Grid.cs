@@ -7,7 +7,6 @@ using static Rules;
 public class Grid : MonoBehaviour
 {
     private GameObject tilePrefab;
-    private RuleName[] ruleNames;
     private int rows;
     private int columns;
     private Solve solve;
@@ -36,10 +35,10 @@ public class Grid : MonoBehaviour
         columns = gridData.columns;
         tilePrefab = gridData.tilePrefab;
         solve = new Solve(gridData);
-        rules = new Func<Solve, bool>[ruleNames.Length];
-        for (int i = 0; i < ruleNames.Length; i++)
+        rules = new Func<Solve, bool>[gridData.ruleNames.Length];
+        for (int i = 0; i < rules.Length; i++)
         {
-            rules[i] = (Func<Solve, bool>)Delegate.CreateDelegate(typeof(Rules), typeof(Rules).GetMethod(ruleNames[i].ToString()));
+            rules[i] = (Func<Solve, bool>)Delegate.CreateDelegate(typeof(Rules), typeof(Rules).GetMethod(gridData.ruleNames[i].ToString()));
         }
 
         // Create physical grid
