@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 
 public class GridCreator : MonoBehaviour
 {
     [SerializeField] private Grid grid;
+    [SerializeField] private GameObject createGridBtn;
     //[SerializeField] private TMP_InputField rowInput;
-    public int rows;
-    public int columns;
+    [SerializeField] private int rows;
+    [SerializeField] private int columns;
+
 
     public void SetRows(string rowText)
     {
@@ -21,6 +24,7 @@ public class GridCreator : MonoBehaviour
     public void CreateGrid()
     {
         Debug.Log("creating grid with " + rows + " rows and " + columns + " columns");
+        createGridBtn.SetActive(false);
         grid.CreateGrid(rows, columns);
     }
 }
