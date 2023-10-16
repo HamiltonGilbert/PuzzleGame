@@ -7,7 +7,7 @@ public class Solve
     private int[][] grid;
     private int[][] defaultGrid;
 
-    public Solve(Grid grid)
+    public Solve(GridData gridData)
     {
 
     }

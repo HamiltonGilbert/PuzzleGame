@@ -6,27 +6,18 @@ using static Rules;
 
 public class Grid : MonoBehaviour
 {
-    [SerializeField] private GameObject tilePrefab;
-    private Color pressedColor = new Color(200,200,200,255);
-    [SerializeField] private Color activeColor;
-    [SerializeField] private Color inactiveColor;
-    [SerializeField] private GridRules gridRules;
-    [SerializeField] private RuleName[] ruleNames = new RuleName[0];
-    [SerializeField] private int rows;
-    [SerializeField] private int columns;
-
+    private GameObject tilePrefab;
+    private GridRules gridRules;
+    private RuleName[] ruleNames;
+    private int rows;
+    private int columns;
     private Solve solve;
     private Func<Solve, bool>[] rules;
     private GameObject[][] tileObjects;
 
     public void Awake()
     {
-        solve = new Solve(this);
-        rules = new Func<Solve, bool>[ruleNames.Length];
-        for (int i = 0; i < ruleNames.Length; i++)
-        {
-            rules[i] = (Func<Solve, bool>)Delegate.CreateDelegate(typeof(Rules), typeof(Rules).GetMethod(ruleNames[i].ToString()));
-        }
+        
     }
 
     public bool[] CheckMove()
@@ -39,8 +30,20 @@ public class Grid : MonoBehaviour
         return check;
     }
 
-    public void CreateGrid()
+    public void CreateGrid(GridData gridData)
     {
+        // initialize
+        rows = gridData.rows;
+        columns = gridData.columns;
+        tilePrefab = gridData.tilePrefab;
+        solve = new Solve(gridData);
+        rules = new Func<Solve, bool>[ruleNames.Length];
+        for (int i = 0; i < ruleNames.Length; i++)
+        {
+            rules[i] = (Func<Solve, bool>)Delegate.CreateDelegate(typeof(Rules), typeof(Rules).GetMethod(ruleNames[i].ToString()));
+        }
+
+        // Create physical grid
         int tileDimensions = TileDimensions(rows, columns);
         float tileScale = tileDimensions / 100f;
         Debug.Log("tile dimensions: " + tileDimensions);
@@ -56,7 +59,7 @@ public class Grid : MonoBehaviour
                 GameObject tempTile = Instantiate(tilePrefab, gameObject.transform);
                 tempTile.transform.position = new Vector3(transform.position.x + xPos + (tileDimensions * c),transform.position.y + yPos + (tileDimensions * r), 0);
                 tempTile.transform.localScale = new Vector3(tileScale, tileScale, 1f);
-                tempTile.GetComponent<Tile>().CreateTile(r, c, activeColor, inactiveColor, this);
+                tempTile.GetComponent<Tile>().CreateTile(r, c, this);
                 rowObjects[c] = tempTile;
             }
             tileObjects[r] = rowObjects;

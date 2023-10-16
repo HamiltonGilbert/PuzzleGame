@@ -11,19 +11,17 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private Grid grid;
     [SerializeField] private Image image;
     [SerializeField] private Color pressedColor;
+    [SerializeField] private Color activeColor;
+    [SerializeField] private Color inactiveColor;
 
     private bool defaultState = false;
     private bool state;
-    private Color activeColor;
-    private Color inactiveColor;
 
-    public void CreateTile(int row, int column, Color colorActive, Color colorInactive, Grid grid)
+    public void CreateTile(int row, int column, Grid grid)
     {
         this.grid = grid;
         index[0] = row;
         index[1] = column;
-        this.activeColor = colorActive;
-        this.inactiveColor = colorInactive;
     }
     public void OnPointerDown(PointerEventData eventData)
     {

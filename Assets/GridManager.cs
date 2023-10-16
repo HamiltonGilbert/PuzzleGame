@@ -6,14 +6,12 @@ using System;
 
 public class GridManager : MonoBehaviour
 {
-    [SerializeField] private GameObject gridPrefab;
-    private GameObject gridObject;
-    private Grid grid;
+    [SerializeField] private Grid grid;
+    [SerializeField] private GridData gridData;
 
-    private void Awake()
+    private void Start()
     {
-        grid = Instantiate(gridPrefab, gameObject.transform).GetComponent<Grid>();
-        grid.CreateGrid();
+        grid.CreateGrid(gridData);
     }
 
     public void UndoMove()
