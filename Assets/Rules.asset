@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a405565e2107041438da5d01d2f21e57, type: 3}
   m_Name: Rules
   m_EditorClassIdentifier: 
-  rulenames:
-  - NoAdjacency
+  ruleNames:
+  - HasFiveBlack

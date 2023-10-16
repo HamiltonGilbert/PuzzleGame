@@ -3,10 +3,9 @@ using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Rules", menuName = "GridRules", order = 1)]
-public class GridRules : ScriptableObject
+public class GridRules: MonoBehaviour
 {
-    [SerializeField] string[] ruleNames;
+    [SerializeField] string[] ruleNames = new string[0];
     private Func<Solve, bool>[] rules;
     public void Awake()
     {

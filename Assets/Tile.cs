@@ -10,30 +10,48 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private int[] index = new int[2];
     private Grid grid;
     [SerializeField] private Image image;
+    [SerializeField] private Color pressedColor;
 
-    private Color defaultColor = new Color(255, 255, 255, 255);
+    private bool defaultState = false;
+    private bool state;
+    private Color activeColor;
+    private Color inactiveColor;
 
-    public void CreateTile(int row, int column, Grid grid)
+    public void CreateTile(int row, int column, Color colorActive, Color colorInactive, Grid grid)
     {
         this.grid = grid;
         index[0] = row;
         index[1] = column;
+        this.activeColor = colorActive;
+        this.inactiveColor = colorInactive;
     }
     public void OnPointerDown(PointerEventData eventData)
     {
-        grid.TilePressed(index);
+        image.color = pressedColor;
     }
     public void OnPointerUp(PointerEventData eventData)
     {
-        grid.TileReleased(index);
+        SwitchState();
     }
 
-    public void SetColor(Color color)
+    public void SetState(bool state)
     {
-        image.color = color;
+        this.state = state;
     }
-    public void ResetColor()
+    public void SwitchState()
     {
-        image.color = defaultColor;
+        state = !state;
+        UpdateColor();
+    }
+    public void ResetState()
+    {
+        state = defaultState;
+    }
+    private void UpdateColor()
+    {
+        if (state)
+            image.color = activeColor;
+        else
+            image.color = inactiveColor;
     }
 }

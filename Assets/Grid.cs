@@ -5,27 +5,24 @@ using UnityEngine;
 public class Grid : MonoBehaviour
 {
     [SerializeField] private GameObject tilePrefab;
-    [SerializeField] private Color pressedColor;
-    [SerializeField] private Color releasedColor;
-
-    public int rows;
-    public int columns;
+    private Color pressedColor = new Color(200,200,200,255);
+    [SerializeField] private Color activeColor;
+    [SerializeField] private Color inactiveColor;
+    [SerializeField] private GridRules gridRules;
+    [SerializeField] private int rows;
+    [SerializeField] private int columns;
 
     private GameObject[][] tileObjects;
 
-    public void TilePressed(int[] index)
-    {
-        tileObjects[index[0]][index[1]].GetComponent<Tile>().SetColor(pressedColor);
-    }
     public void TileReleased(int[] index)
     {
-        tileObjects[index[0]][index[1]].GetComponent<Tile>().SetColor(releasedColor);
+        tileObjects[index[0]][index[1]].GetComponent<Tile>().SwitchState();
     }
 
-    public void CreateGrid(int rows, int columns)
+    public void CreateGrid()
     {
-        this.rows = rows;
-        this.columns = columns;
+        //this.rows = rows;
+        //this.columns = columns;
         int tileDimensions = TileDimensions(rows, columns);
         float tileScale = tileDimensions / 100f;
         Debug.Log("tile dimensions: " + tileDimensions);
@@ -41,7 +38,7 @@ public class Grid : MonoBehaviour
                 GameObject tempTile = Instantiate(tilePrefab, gameObject.transform);
                 tempTile.transform.position = new Vector3(transform.position.x + xPos + (tileDimensions * c),transform.position.y + yPos + (tileDimensions * r), 0);
                 tempTile.transform.localScale = new Vector3(tileScale, tileScale, 1f);
-                tempTile.GetComponent<Tile>().CreateTile(r, c, this);
+                tempTile.GetComponent<Tile>().CreateTile(r, c, activeColor, inactiveColor, this);
                 rowObjects[c] = tempTile;
             }
             tileObjects[r] = rowObjects;
@@ -54,7 +51,7 @@ public class Grid : MonoBehaviour
         {
             foreach (GameObject tile in row)
             {
-                tile.GetComponent<Tile>().ResetColor();
+                tile.GetComponent<Tile>().ResetState();
             }
         }
     }
