@@ -6,7 +6,7 @@ public class Solve
 {
     private int[][] grid;
     private int[][] defaultGrid;
-    private Action<int[][]>[] rules;
+    private Func<Solve, bool>[] rules;
 
     public void NewGrid(int[][] newGrid, Action<int[][]>[] newRules)
     {
@@ -22,8 +22,11 @@ public class Solve
         grid[index[0]][index[1]] = value;
     }
 
-    public void checkSolved()
+    public bool checkSolved()
     {
-
+        foreach (Func<Solve, bool> rule in rules)
+            if (!rule(this))
+                return false;
+        return true;
     }
 }

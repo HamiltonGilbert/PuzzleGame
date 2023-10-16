@@ -8,6 +8,9 @@ public class Grid : MonoBehaviour
     [SerializeField] private Color pressedColor;
     [SerializeField] private Color releasedColor;
 
+    public int rows;
+    public int columns;
+
     private GameObject[][] tileObjects;
 
     public void TilePressed(int[] index)
@@ -21,6 +24,8 @@ public class Grid : MonoBehaviour
 
     public void CreateGrid(int rows, int columns)
     {
+        this.rows = rows;
+        this.columns = columns;
         int tileDimensions = TileDimensions(rows, columns);
         float tileScale = tileDimensions / 100f;
         Debug.Log("tile dimensions: " + tileDimensions);
