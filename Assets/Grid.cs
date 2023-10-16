@@ -7,7 +7,6 @@ using static Rules;
 public class Grid : MonoBehaviour
 {
     private GameObject tilePrefab;
-    private GridRules gridRules;
     private RuleName[] ruleNames;
     private int rows;
     private int columns;
