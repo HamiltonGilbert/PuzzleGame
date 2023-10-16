@@ -7,6 +7,11 @@ public class Solve
     private int[][] grid;
     private int[][] defaultGrid;
 
+    public Solve(Grid grid)
+    {
+
+    }
+
     public void NewGrid(int[][] newGrid, Action<int[][]>[] newRules)
     {
         defaultGrid = newGrid;

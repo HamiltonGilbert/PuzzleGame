@@ -1,6 +1,8 @@
-using System.Collections;
+using System;
+using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine;
+using static Rules;
 
 public class Grid : MonoBehaviour
 {
@@ -9,20 +11,36 @@ public class Grid : MonoBehaviour
     [SerializeField] private Color activeColor;
     [SerializeField] private Color inactiveColor;
     [SerializeField] private GridRules gridRules;
+    [SerializeField] private RuleName[] ruleNames = new RuleName[0];
     [SerializeField] private int rows;
     [SerializeField] private int columns;
 
+    private Solve solve;
+    private Func<Solve, bool>[] rules;
     private GameObject[][] tileObjects;
 
-    public void TileReleased(int[] index)
+    public void Awake()
     {
-        tileObjects[index[0]][index[1]].GetComponent<Tile>().SwitchState();
+        solve = new Solve(this);
+        rules = new Func<Solve, bool>[ruleNames.Length];
+        for (int i = 0; i < ruleNames.Length; i++)
+        {
+            rules[i] = (Func<Solve, bool>)Delegate.CreateDelegate(typeof(Rules), typeof(Rules).GetMethod(ruleNames[i].ToString()));
+        }
+    }
+
+    public bool[] CheckMove()
+    {
+        bool[] check = new bool[rules.Length];
+        for (int i=0; i<rules.Length; i++)
+        {
+            check[i] = rules[i](solve);
+        }
+        return check;
     }
 
     public void CreateGrid()
     {
-        //this.rows = rows;
-        //this.columns = columns;
         int tileDimensions = TileDimensions(rows, columns);
         float tileScale = tileDimensions / 100f;
         Debug.Log("tile dimensions: " + tileDimensions);
