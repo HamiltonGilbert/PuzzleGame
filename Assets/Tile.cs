@@ -15,9 +15,10 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [SerializeField] private Color pressedColor;
     [SerializeField] private Color activeColor;
     [SerializeField] private Color inactiveColor;
+    [SerializeField] private Color nullColor;
 
-    private bool defaultState = false;
-    private bool state;
+    //private bool defaultState = false;
+    private bool? state;
     private bool isFixed = false;
 
     public void CreateTile(int row, int column, Solve solve)
@@ -34,7 +35,10 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public void OnPointerUp(PointerEventData eventData)
     {
         if (!isFixed)
-            SwitchState();
+            if (eventData.button == PointerEventData.InputButton.Left)
+                SetState(true);
+            else if (eventData.button == PointerEventData.InputButton.Right)
+                SetState(false);
     }
 
     public void SetFixed(bool state)
@@ -50,28 +54,38 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     //    this.state = state;
     //    UpdateColor();
     //}
-    private void SwitchState()
+    private void SetState(bool? newState)
     {
-        state = !state;
+        state = newState;
         UpdateTile();
     }
     public void ResetState()
     {
         if (!isFixed)
         {
-            state = false;
+            state = null;
             UpdateTile();
         }
     }
     private void UpdateTile()
     {
         solve.MakeMove(row, column, state);
-        if (state)
+        if (state == null)
+            image.color = nullColor;
+        else if ((bool) state)
             image.color = activeColor;
         else
             image.color = inactiveColor;
     }
 }
+
+//public enum State
+//{
+//    True,
+//    False,
+//    NULL
+
+//}
 
 //public class FixedTile : Tile
 //{

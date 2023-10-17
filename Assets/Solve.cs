@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class Solve
 {
-    public bool[][] gridState;
+    public bool?[][] gridState;
     private Func<bool[][], bool>[] rules;
     private LevelManager levelManager;
 
     public Solve(GridData gridData, LevelManager levelManager)
     {
-        gridState = new bool[gridData.rows][];
+        gridState = new bool?[gridData.rows][];
         for (int i = 0; i < gridData.rows; i++)
-            gridState[i] = new bool[gridData.columns];
+            gridState[i] = new bool?[gridData.columns];
         rules = getRules(gridData);
         this.levelManager = levelManager;
     }
 
-    public void MakeMove(int row, int column, bool state)
+    public void MakeMove(int row, int column, bool? state)
     {
         gridState[row][column] = state;
-        bool[] results = CheckRules();
+        bool?[] results = CheckRules();
         levelManager.UpdateRules(results);
         if (CheckCompleted(results))
         {
@@ -29,9 +29,9 @@ public class Solve
         }
     }
 
-    public bool[] CheckRules()
+    public bool?[] CheckRules()
     {
-        bool[] result = new bool[rules.Length];
+        bool?[] result = new bool?[rules.Length];
         for (int i = 0; i < rules.Length; i++)
         {
             result[i] = rules[i](gridState);
