@@ -11,7 +11,7 @@ public class Grid : MonoBehaviour
     private int columns;
     private Solve solve;
     private Func<Solve, bool>[] rules;
-    private GameObject[][] tileObjects;
+    private Tile[][] tiles;
 
     public bool[] CheckMove()
     {
@@ -33,7 +33,7 @@ public class Grid : MonoBehaviour
         rules = new Func<Solve, bool>[gridData.ruleNames.Length];
         for (int i = 0; i < rules.Length; i++)
         {
-            rules[i] = (Func<Solve, bool>)Delegate.CreateDelegate(typeof(Rules), typeof(Rules).GetMethod(gridData.ruleNames[i].ToString()));
+            rules[i] = (Func<Solve, bool>) Delegate.CreateDelegate(typeof(Func<Solve, bool>), typeof(Rules).GetMethod(gridData.ruleNames[i].ToString()));
         }
 
         // Create physical grid
@@ -42,29 +42,33 @@ public class Grid : MonoBehaviour
         Debug.Log("tile dimensions: " + tileDimensions);
         int xPos = (columns * -1 * tileDimensions / 2) + tileDimensions / 2;
         int yPos = (rows * -1 * tileDimensions / 2) + tileDimensions / 2;
-        tileObjects = new GameObject[rows][];
+        tiles = new Tile[rows][];
         for (int r = 0; r < rows; r++)
         {
-            GameObject[] rowObjects = new GameObject[columns];
+            Tile[] rowTiles = new Tile[columns];
             for (int c = 0; c < columns; c++)
             {
-                GameObject tempTile = Instantiate(tilePrefab, gameObject.transform);
-                tempTile.transform.position = new Vector3(transform.position.x + xPos + (tileDimensions * c),transform.position.y + yPos + (tileDimensions * r), 0);
-                tempTile.transform.localScale = new Vector3(tileScale, tileScale, 1f);
-                tempTile.GetComponent<Tile>().CreateTile(r, c, this);
-                rowObjects[c] = tempTile;
+                GameObject tempObject = Instantiate(tilePrefab, gameObject.transform);
+                tempObject.transform.position = new Vector3(transform.position.x + xPos + (tileDimensions * c),transform.position.y + yPos + (tileDimensions * r), 0);
+                tempObject.transform.localScale = new Vector3(tileScale, tileScale, 1f);
+                rowTiles[c] = tempObject.GetComponent<Tile>();
+                rowTiles[c].CreateTile(r, c, this);
             }
-            tileObjects[r] = rowObjects;
+            tiles[r] = rowTiles;
         }
+
+        // set fixed tiles
+        foreach (GridData.Fixed fixedTile in gridData.fixedTiles)
+            tiles[fixedTile.row-1][fixedTile.column-1].SetFixed(fixedTile.value);
     }
 
     public void ResetGrid()
     {
-        foreach (GameObject[] row in tileObjects)
+        foreach (Tile[] row in tiles)
         {
-            foreach (GameObject tile in row)
+            foreach (Tile tile in row)
             {
-                tile.GetComponent<Tile>().ResetState();
+                tile.ResetState();
             }
         }
     }

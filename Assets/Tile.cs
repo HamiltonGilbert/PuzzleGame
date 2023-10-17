@@ -10,6 +10,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private int[] index = new int[2];
     private Grid grid;
     [SerializeField] private Image image;
+    [SerializeField] private GameObject fixedimage;
     [SerializeField] private Color pressedColor;
     [SerializeField] private Color activeColor;
     [SerializeField] private Color inactiveColor;
@@ -33,6 +34,14 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if (!isFixed)
             SwitchState();
+    }
+
+    public void SetFixed(bool state)
+    {
+        this.state = state;
+        isFixed = true;
+        fixedimage.SetActive(true);
+        UpdateColor();
     }
 
     //private void SetState(bool state)
