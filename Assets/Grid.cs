@@ -2,32 +2,24 @@ using System;
 using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine;
-using static Rules;
 
 public class Grid : MonoBehaviour
 {
     private GameObject tilePrefab;
     private int rows;
     private int columns;
-    private Func<Solve, bool>[] rules;
     private Tile[][] tiles;
 
-    public void CreateGrid(GridData gridData)
+    public void CreateGrid(GridData gridData, Solve solve)
     {
         // initialize
         rows = gridData.rows;
         columns = gridData.columns;
         tilePrefab = gridData.tilePrefab;
-        rules = new Func<Solve, bool>[gridData.ruleNames.Length];
-        for (int i = 0; i < rules.Length; i++)
-        {
-            rules[i] = (Func<Solve, bool>)Delegate.CreateDelegate(typeof(Func<Solve, bool>), typeof(Rules).GetMethod(gridData.ruleNames[i].ToString()));
-        }
 
         // Create physical grid
         int tileDimensions = TileDimensions(rows, columns);
         float tileScale = tileDimensions / 100f;
-        Solve solve = new Solve(gridData, rules);
         int xPos = (columns * -1 * tileDimensions / 2) + tileDimensions / 2;
         int yPos = (rows * -1 * tileDimensions / 2) + tileDimensions / 2;
         tiles = new Tile[rows][];

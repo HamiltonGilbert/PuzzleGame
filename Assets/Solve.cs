@@ -5,28 +5,28 @@ using UnityEngine;
 public class Solve
 {
     public bool[][] gridState;
-    private Func<Solve, bool>[] rules;
+    private Func<bool[][], bool>[] rules;
     private LevelManager levelManager;
 
-    public Solve(GridData gridData, Func<Solve, bool>[] rules)
+    public Solve(GridData gridData, LevelManager levelManager)
     {
         gridState = new bool[gridData.rows][];
         for (int i = 0; i < gridData.rows; i++)
             gridState[i] = new bool[gridData.columns];
-        this.rules = rules;
+        rules = getRules(gridData);
+        this.levelManager = levelManager;
     }
 
     public void MakeMove(int row, int column, bool state)
     {
         gridState[row][column] = state;
         bool[] results = CheckRules();
+        levelManager.UpdateRules(results);
         if (CheckCompleted(results))
         {
             levelManager.LevelComplete();
             return;
         }
-
-        levelManager.UpdateRules(results);
     }
 
     public bool[] CheckRules()
@@ -34,7 +34,7 @@ public class Solve
         bool[] result = new bool[rules.Length];
         for (int i = 0; i < rules.Length; i++)
         {
-            result[i] = rules[i](this);
+            result[i] = rules[i](gridState);
         }
         return result;
     }
@@ -44,6 +44,16 @@ public class Solve
             if (!result)
                 return false;
         return true;
+    }
+
+    private Func<bool[][], bool>[] getRules(GridData gridData)
+    {
+        rules = new Func<bool[][], bool>[gridData.ruleNames.Length];
+        for (int i = 0; i < rules.Length; i++)
+        {
+            rules[i] = (Func<bool[][], bool>)Delegate.CreateDelegate(typeof(Func<bool[][], bool>), typeof(Rules).GetMethod(gridData.ruleNames[i].ToString()));
+        }
+        return rules;
     }
 }
 

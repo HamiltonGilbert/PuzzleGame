@@ -13,10 +13,9 @@ public static class Rules
     //    for ()
     //}
 
-    public static bool HasFiveBlack(Solve solve)
+    public static bool HasFiveBlack(bool[][] gridState)
     {
         int blackTiles = 0;
-        bool[][] gridState = solve.gridState;
         for (int r = 0; r < gridState.Length; r++)
         {
             for (int c = 0; c < gridState.Length; c++)
@@ -29,7 +28,7 @@ public static class Rules
         }
         return false;
     }
-    public static bool NoFourInARow(Solve solve)
+    public static bool NoFourInARow(bool[][] gridState)
     {
         return true;
     }

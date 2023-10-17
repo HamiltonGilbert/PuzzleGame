@@ -57,7 +57,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3497587065703324779}
-  - component: {fileID: 3497587065703324778}
+  - component: {fileID: 1038398966163220606}
   m_Layer: 5
   m_Name: LevelManager
   m_TagString: Untagged
@@ -85,7 +85,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3497587065703324778
+--- !u!114 &1038398966163220606
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,8 +94,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3497587065703324780}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b8b527a11b3a40d2b3246b655a4623f, type: 3}
+  m_Script: {fileID: 11500000, guid: 53d568df90bc14d30bd3df0cf2153aa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   grid: {fileID: 3497587065521279490}
   gridData: {fileID: 0}
+  ruleImages: []
+  incompleteColor: {r: 0, g: 0.35188085, b: 0.9019608, a: 0.39215687}
+  completeColor: {r: 0, g: 0.3529412, b: 0.9019608, a: 1}
