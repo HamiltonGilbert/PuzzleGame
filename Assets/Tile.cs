@@ -7,8 +7,9 @@ using TMPro;
 
 public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-    private int[] index = new int[2];
-    private Grid grid;
+    private int row;
+    private int column;
+    private Solve solve;
     [SerializeField] private Image image;
     [SerializeField] private GameObject fixedimage;
     [SerializeField] private Color pressedColor;
@@ -19,11 +20,11 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private bool state;
     private bool isFixed = false;
 
-    public void CreateTile(int row, int column, Grid grid)
+    public void CreateTile(int row, int column, Solve solve)
     {
-        index[0] = row;
-        index[1] = column;
-        this.grid = grid;
+        this.row = row;
+        this.column = column;
+        this.solve = solve;
     }
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -41,7 +42,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         this.state = state;
         isFixed = true;
         fixedimage.SetActive(true);
-        UpdateColor();
+        UpdateTile();
     }
 
     //private void SetState(bool state)
@@ -52,18 +53,19 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private void SwitchState()
     {
         state = !state;
-        UpdateColor();
+        UpdateTile();
     }
     public void ResetState()
     {
         if (!isFixed)
         {
             state = false;
-            UpdateColor();
+            UpdateTile();
         }
     }
-    private void UpdateColor()
+    private void UpdateTile()
     {
+        solve.MakeMove(row, column, state);
         if (state)
             image.color = activeColor;
         else
