@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Solve
 {
-    private bool[][] gridState;
+    public bool[][] gridState;
     private Func<Solve, bool>[] rules;
     private LevelManager levelManager;
 
