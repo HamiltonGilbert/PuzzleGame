@@ -5,7 +5,7 @@ using UnityEngine;
 public class Solve
 {
     public bool?[][] gridState;
-    private Func<bool[][], bool>[] rules;
+    private Func<bool?[][], bool>[] rules;
     private LevelManager levelManager;
 
     public Solve(GridData gridData, LevelManager levelManager)
@@ -20,7 +20,7 @@ public class Solve
     public void MakeMove(int row, int column, bool? state)
     {
         gridState[row][column] = state;
-        bool?[] results = CheckRules();
+        bool[] results = CheckRules();
         levelManager.UpdateRules(results);
         if (CheckCompleted(results))
         {
@@ -29,9 +29,9 @@ public class Solve
         }
     }
 
-    public bool?[] CheckRules()
+    public bool[] CheckRules()
     {
-        bool?[] result = new bool?[rules.Length];
+        bool[] result = new bool[rules.Length];
         for (int i = 0; i < rules.Length; i++)
         {
             result[i] = rules[i](gridState);
@@ -46,12 +46,12 @@ public class Solve
         return true;
     }
 
-    private Func<bool[][], bool>[] getRules(GridData gridData)
+    private Func<bool?[][], bool>[] getRules(GridData gridData)
     {
-        rules = new Func<bool[][], bool>[gridData.ruleNames.Length];
+        rules = new Func<bool?[][], bool>[gridData.ruleNames.Length];
         for (int i = 0; i < rules.Length; i++)
         {
-            rules[i] = (Func<bool[][], bool>)Delegate.CreateDelegate(typeof(Func<bool[][], bool>), typeof(Rules).GetMethod(gridData.ruleNames[i].ToString()));
+            rules[i] = (Func<bool?[][], bool>)Delegate.CreateDelegate(typeof(Func<bool?[][], bool>), typeof(Rules).GetMethod(gridData.ruleNames[i].ToString()));
         }
         return rules;
     }

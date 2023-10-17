@@ -13,22 +13,25 @@ public static class Rules
     //    for ()
     //}
 
-    public static bool HasFiveBlack(bool[][] gridState)
+    public static bool HasFiveBlack(bool?[][] gridState)
     {
         int blackTiles = 0;
         for (int r = 0; r < gridState.Length; r++)
         {
             for (int c = 0; c < gridState.Length; c++)
             {
-                if (gridState[r][c])
-                    blackTiles++;
-                if (blackTiles == 5)
-                    return true;
+                if (gridState[r][c] != null)
+                {
+                    if ((bool) gridState[r][c])
+                        blackTiles++;
+                    if (blackTiles == 5)
+                        return true;
+                }
             }
         }
         return false;
     }
-    public static bool NoFourInARow(bool[][] gridState)
+    public static bool NoFourInARow(bool?[][] gridState)
     {
         return true;
     }

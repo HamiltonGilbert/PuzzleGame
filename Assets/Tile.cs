@@ -26,6 +26,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         this.row = row;
         this.column = column;
         this.solve = solve;
+        ResetState();
     }
     public void OnPointerDown(PointerEventData eventData)
     {
