@@ -13,11 +13,6 @@ public class Grid : MonoBehaviour
     private Func<Solve, bool>[] rules;
     private GameObject[][] tileObjects;
 
-    public void Awake()
-    {
-        
-    }
-
     public bool[] CheckMove()
     {
         bool[] check = new bool[rules.Length];
@@ -48,7 +43,6 @@ public class Grid : MonoBehaviour
         int xPos = (columns * -1 * tileDimensions / 2) + tileDimensions / 2;
         int yPos = (rows * -1 * tileDimensions / 2) + tileDimensions / 2;
         tileObjects = new GameObject[rows][];
-        tileObjects = new GameObject[rows][];
         for (int r = 0; r < rows; r++)
         {
             GameObject[] rowObjects = new GameObject[columns];
@@ -78,7 +72,7 @@ public class Grid : MonoBehaviour
     public int TileDimensions(int rows, int columns)
     {
         // Replace with canvas-based sizing
-        int width = 1120 / columns;
+        int width = 920 / columns;
         int height = 632 / rows;
         if (width < height)
             return width;

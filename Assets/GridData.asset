@@ -13,6 +13,13 @@ MonoBehaviour:
   m_Name: GridData
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 2082110037364603164, guid: 10db48e1c8eb6489ea3365ba2a224af2, type: 3}
-  ruleNames: 
-  rows: 0
-  columns: 0
+  ruleNames: 00000000
+  rows: 3
+  columns: 5
+  fixedTiles:
+  - row: 1
+    column: 1
+    value: 1
+  - row: 3
+    column: 4
+    value: 1

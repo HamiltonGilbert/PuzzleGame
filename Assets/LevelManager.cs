@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-public class GridManager : MonoBehaviour
+public class LevelManager : MonoBehaviour
 {
     [SerializeField] private Grid grid;
     [SerializeField] private GridData gridData;

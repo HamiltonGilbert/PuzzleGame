@@ -4,27 +4,27 @@ using UnityEngine;
 
 public class Solve
 {
-    private int[][] grid;
-    private int[][] defaultGrid;
+    private bool[][] grid;
+    //private bool[][] defaultGrid;
 
     public Solve(GridData gridData)
     {
-
+        //gridData
     }
 
-    public void NewGrid(int[][] newGrid, Action<int[][]>[] newRules)
+    public void NewGrid(bool[][] newGrid, Action<int[][]>[] newRules)
     {
-        defaultGrid = newGrid;
-        ResetGrid();
+        grid = newGrid;
+        //ResetGrid();
     }
-    public void ResetGrid()
-    {
-        grid = defaultGrid;
-    }
-    public void SetTile(int[] index, int value)
-    {
-        grid[index[0]][index[1]] = value;
-    }
+    //public void ResetGrid()
+    //{
+    //    grid = defaultGrid;
+    //}
+    //public void SetTile(int[] index, int value)
+    //{
+    //    grid[index[0]][index[1]] = value;
+    //}
 
     public bool checkSolved(Func<Solve, bool>[] rules)
     {

@@ -16,34 +16,42 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private bool defaultState = false;
     private bool state;
+    private bool isFixed = false;
 
     public void CreateTile(int row, int column, Grid grid)
     {
-        this.grid = grid;
         index[0] = row;
         index[1] = column;
+        this.grid = grid;
     }
     public void OnPointerDown(PointerEventData eventData)
     {
-        image.color = pressedColor;
+        if (!isFixed)
+            image.color = pressedColor;
     }
     public void OnPointerUp(PointerEventData eventData)
     {
-        SwitchState();
+        if (!isFixed)
+            SwitchState();
     }
 
-    public void SetState(bool state)
-    {
-        this.state = state;
-    }
-    public void SwitchState()
+    //private void SetState(bool state)
+    //{
+    //    this.state = state;
+    //    UpdateColor();
+    //}
+    private void SwitchState()
     {
         state = !state;
         UpdateColor();
     }
     public void ResetState()
     {
-        state = defaultState;
+        if (!isFixed)
+        {
+            state = false;
+            UpdateColor();
+        }
     }
     private void UpdateColor()
     {
@@ -53,3 +61,25 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             image.color = inactiveColor;
     }
 }
+
+//public class FixedTile : Tile
+//{
+//    private int[] index = new int[2];
+//    private Grid grid;
+//    [SerializeField] private Image image;
+//    [SerializeField] private Color activeColor;
+//    [SerializeField] private Color inactiveColor;
+//    private bool state;
+
+//    public void CreateTile(int row, int column, bool isFixedTo, Grid grid)
+//    {
+//        index[0] = row;
+//        index[1] = column;
+//        state = isFixedTo;
+//        this.grid = grid;
+//        if (state)
+//            image.color = activeColor;
+//        else
+//            image.color = inactiveColor;
+//    }
+//}
