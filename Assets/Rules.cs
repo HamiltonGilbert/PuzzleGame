@@ -6,7 +6,7 @@ using static Helpers;
 
 public static class Rules
 {
-    public enum RuleName { HasFiveBlack, LessThanSevenBlack, NoSingleBlack, AllBlackConnected, NoFourInARowBlack, NoThreeInADiagonalBlack };
+    public enum RuleName { HasFiveBlack, LessThanSevenBlack, LessThanSevenWhite, NoSingleBlack, AllBlackConnected, NoFourInARowBlack, NoThreeInADiagonalBlack };
     // make these take in a tile instead and have each tile keep information about neighbor tiles?
     //         then it can stop you from making incorrect moves in real time
     //public static void AllBlackConnected(Solve solve)
@@ -49,6 +49,24 @@ public static class Rules
             }
         }
         if (blackTiles < 7)
+            return true;
+        return false;
+    }
+    public static bool LessThanSevenWhite(bool?[][] gridState)
+    {
+        int whiteTiles = 0;
+        for (int r = 0; r < gridState.Length; r++)
+        {
+            for (int c = 0; c < gridState[r].Length; c++)
+            {
+                if (gridState[r][c] != null)
+                {
+                    if (!(bool)gridState[r][c])
+                        whiteTiles++;
+                }
+            }
+        }
+        if (whiteTiles < 7)
             return true;
         return false;
     }

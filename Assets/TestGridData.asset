@@ -13,16 +13,7 @@ MonoBehaviour:
   m_Name: TestGridData
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 2082110037364603164, guid: 10db48e1c8eb6489ea3365ba2a224af2, type: 3}
-  ruleNames: 02000000040000000500000000000000
+  ruleNames: 02000000000000000600000005000000
   rows: 3
   columns: 5
-  fixedTiles:
-  - row: 1
-    column: 1
-    value: 1
-  - row: 3
-    column: 4
-    value: 0
-  - row: 2
-    column: 3
-    value: 0
+  fixedTiles: []
