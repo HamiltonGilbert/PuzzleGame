@@ -28,7 +28,7 @@ public class LevelManager : MonoBehaviour
 
     public void LevelComplete()
     {
-        //gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     public void UpdateRules(bool[] results)

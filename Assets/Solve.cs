@@ -44,6 +44,10 @@ public class Solve
         foreach (bool result in results)
             if (!result)
                 return false;
+        foreach (bool?[] column in gridState)
+            foreach (bool? state in column)
+                if (state == null)
+                    return false;
         return true;
     }
 
