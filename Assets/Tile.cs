@@ -30,8 +30,8 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     }
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (!isFixed)
-            image.color = pressedColor;
+        //if (!isFixed)
+        //    image.color = pressedColor;
     }
     public void OnPointerUp(PointerEventData eventData)
     {

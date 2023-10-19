@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2082110037364603155}
   - component: {fileID: 2082110037364603154}
   m_Layer: 5
-  m_Name: Tile
+  m_Name: DefaultTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38,7 +38,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -250, y: 100}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 98, y: 98}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6793687979013792717
 MonoBehaviour:
@@ -57,7 +57,7 @@ MonoBehaviour:
   pressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
   activeColor: {r: 0, g: 0, b: 0, a: 1}
   inactiveColor: {r: 1, g: 1, b: 1, a: 1}
-  nullColor: {r: 0, g: 0, b: 0, a: 0}
+  nullColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0}
 --- !u!222 &2082110037364603155
 CanvasRenderer:
   m_ObjectHideFlags: 0
