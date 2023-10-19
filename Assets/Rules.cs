@@ -118,8 +118,8 @@ public static class Rules
                     if ((bool)gridState[r][c])
                     {
                         bool result = true;
-                        //int[][] tilesToCheck = GetTilesInDirection(new int[] { r, c }, new int[] { 0, 1 }, numberInARow);
-                        int[][] tilesToCheck = { new int[] { r, c + 1 }, new int[] { r, c + 2 }, new int[] { r, c + 3 } };
+                        int[][] tilesToCheck = GetTilesInDirection(new int[] { r, c }, new int[] { 0, 1 }, (numberInARow - 1));
+                        //int[][] tilesToCheck = { new int[] { r, c + 1 }, new int[] { r, c + 2 }, new int[] { r, c + 3 } };
                         if (AreViableTiles(gridState, tilesToCheck))
                             foreach (int[] tile in tilesToCheck)
                                 result &= (bool)gridState[tile[0]][tile[1]];
@@ -142,8 +142,8 @@ public static class Rules
                     if ((bool)gridState[r][c])
                     {
                         bool result = true;
-                        //int[][] tilesToCheck = GetTilesInDirection(new int[] { r, c }, new int[] { 1, 0 }, numberInARow);
-                        int[][] tilesToCheck = { new int[] { r + 1, c }, new int[] { r + 2, c }, new int[] { r + 3, c } };
+                        int[][] tilesToCheck = GetTilesInDirection(new int[] { r, c }, new int[] { 1, 0 }, (numberInARow - 1));
+                        //int[][] tilesToCheck = { new int[] { r + 1, c }, new int[] { r + 2, c }, new int[] { r + 3, c } };
                         if (AreViableTiles(gridState, tilesToCheck))
                             foreach (int[] tile in tilesToCheck)
                                 result &= (bool)gridState[tile[0]][tile[1]];
@@ -162,7 +162,7 @@ public static class Rules
         // replace once general functions that take an input are introduced
         int numberInARow = 3;
         // right up
-        for (int r = 0; r < gridState.Length - (numberInARow-1); r++)
+        for (int r = 0; r < gridState.Length - (numberInARow - 1); r++)
         {
             for (int c = 0; c < gridState[r].Length - (numberInARow - 1); c++)
             {
@@ -171,8 +171,8 @@ public static class Rules
                     if ((bool)gridState[r][c])
                     {
                         bool result = true;
-                        //int[][] tilesToCheck = GetTilesInDirection(new int[] { r, c }, new int[] { 1, 1 }, numberInARow);
-                        int[][] tilesToCheck = { new int[] { r + 1, c + 1 }, new int[] { r + 2, c + 2 } };
+                        int[][] tilesToCheck = GetTilesInDirection(new int[] { r, c }, new int[] { 1, 1 }, (numberInARow - 1));
+                        //int[][] tilesToCheck = { new int[] { r + 1, c + 1 }, new int[] { r + 2, c + 2 } };
                         if (AreViableTiles(gridState, tilesToCheck))
                             foreach (int[] tile in tilesToCheck)
                                 result &= (bool)gridState[tile[0]][tile[1]];
@@ -195,8 +195,8 @@ public static class Rules
                     if ((bool)gridState[r][c])
                     {
                         bool result = true;
-                        //int[][] tilesToCheck = GetTilesInDirection(new int[] { r, c }, new int[] { -1, 1 }, numberInARow);
-                        int[][] tilesToCheck = { new int[] { r + -1, c + 1 }, new int[] { r + -2, c + 2 } };
+                        int[][] tilesToCheck = GetTilesInDirection(new int[] { r, c }, new int[] { -1, 1 }, (numberInARow - 1));
+                        //int[][] tilesToCheck = { new int[] { r + -1, c + 1 }, new int[] { r + -2, c + 2 } };
                         if (AreViableTiles(gridState, tilesToCheck))
                             foreach (int[] tile in tilesToCheck)
                                 result &= (bool)gridState[tile[0]][tile[1]];
@@ -244,7 +244,7 @@ public static class Helpers
     {
         int[][] tiles = new int[numberWanted][];
         for (int i = 0; i < numberWanted; i++)
-            tiles[i] = new int[] { startTileIndex[0] + (direction[0] * (i + 1)), startTileIndex[0] + (direction[0] * (i + 1)) };
+            tiles[i] = new int[] { startTileIndex[0] + (direction[0] * (i + 1)), startTileIndex[1] + (direction[1] * (i + 1)) };
         return tiles;
     }
 }
