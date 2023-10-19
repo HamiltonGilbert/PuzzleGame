@@ -6,6 +6,7 @@ public class Solve
 {
     public bool?[][] gridState;
     private Func<bool?[][], bool>[] rules;
+    public int NumberOfRules { get => rules.Length; }
     private LevelManager levelManager;
 
     public Solve(GridData gridData, LevelManager levelManager)

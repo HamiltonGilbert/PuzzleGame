@@ -17,6 +17,7 @@ public class LevelManager : MonoBehaviour
     {
         solve = new Solve(gridData, this);
         grid.CreateGrid(gridData, solve);
+        HideRules();
         UpdateRules(solve.CheckRules());
     }
 
@@ -32,12 +33,19 @@ public class LevelManager : MonoBehaviour
 
     public void UpdateRules(bool[] results)
     {
-        for (int i = 0; i < ruleImages.Length; i++)
+        for (int i = 0; i < results.Length; i++)
         {
             if (results[i])
                 ruleImages[i].color = completeColor;
             else
                 ruleImages[i].color = incompleteColor;
+        }
+    }
+    public void HideRules()
+    {
+        for (int i = ruleImages.Length; i > solve.NumberOfRules; i--)
+        {
+            ruleImages[i - 1].color = new Color (0, 0, 0, 0);
         }
     }
 }
