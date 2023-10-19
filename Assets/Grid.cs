@@ -62,4 +62,11 @@ public class Grid : MonoBehaviour
             return width;
         return height;
     }
+
+    public void EndLevel()
+    {
+        foreach (Tile[] column in tiles)
+            foreach (Tile tile in column)
+                tile.enabled = false;
+    }
 }

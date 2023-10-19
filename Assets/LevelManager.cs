@@ -7,6 +7,8 @@ using System;
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] private Grid grid;
+    [SerializeField] private GameObject gameOverScreen;
+    [SerializeField] private Button UndoMoveBtn;
     [SerializeField] private GridData gridData;
     [SerializeField] private Image[] ruleImages;
     [SerializeField] private Color incompleteColor = new Color(50, 255, 50, 100);
@@ -15,6 +17,7 @@ public class LevelManager : MonoBehaviour
 
     public void Start()
     {
+        gameOverScreen.SetActive(false);
         solve = new Solve(gridData, this);
         grid.CreateGrid(gridData, solve);
         HideRules();
@@ -28,7 +31,9 @@ public class LevelManager : MonoBehaviour
 
     public void LevelComplete()
     {
-        gameObject.SetActive(false);
+        grid.EndLevel();
+        gameOverScreen.SetActive(true);
+        UndoMoveBtn.interactable = false;
     }
 
     public void UpdateRules(bool[] results)

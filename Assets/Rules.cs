@@ -108,59 +108,67 @@ public static class Rules
     {
         // replace once general functions that take an input are introduced
         int numberInARow = 4;
+
         // horizontal
-        for (int r = 0; r < gridState.Length; r++)
-        {
-            for (int c = 0; c < gridState[r].Length - (numberInARow - 1); c++)
+        if (gridState[0].Length > numberInARow)
+            for (int r = 0; r < gridState.Length; r++)
             {
-                if (gridState[r][c] != null)
+                for (int c = 0; c < gridState[r].Length - (numberInARow - 1); c++)
                 {
-                    if ((bool)gridState[r][c])
+                    if (gridState[r][c] != null)
                     {
-                        bool result = true;
-                        int[][] tilesToCheck = GetTilesInDirection(new int[] { r, c }, new int[] { 0, 1 }, (numberInARow - 1));
-                        //int[][] tilesToCheck = { new int[] { r, c + 1 }, new int[] { r, c + 2 }, new int[] { r, c + 3 } };
-                        if (AreViableTiles(gridState, tilesToCheck))
-                            foreach (int[] tile in tilesToCheck)
-                                result &= (bool)gridState[tile[0]][tile[1]];
-                        else
-                            result = false;
-                        if (result)
-                            return false;
-                    }
+                        if ((bool)gridState[r][c])
+                        {
+                            bool result = true;
+                            int[][] tilesToCheck = GetTilesInDirection(new int[] { r, c }, new int[] { 0, 1 }, (numberInARow - 1));
+                            //int[][] tilesToCheck = { new int[] { r, c + 1 }, new int[] { r, c + 2 }, new int[] { r, c + 3 } };
+                            if (AreViableTiles(gridState, tilesToCheck))
+                                foreach (int[] tile in tilesToCheck)
+                                    result &= (bool)gridState[tile[0]][tile[1]];
+                            else
+                                result = false;
+                            if (result)
+                                return false;
+                        }
                         
-                }
-            }
-        }
-        //vertical
-        for (int r = 0; r < gridState.Length - (numberInARow - 1); r++)
-        {
-            for (int c = 0; c < gridState[r].Length; c++)
-            {
-                if (gridState[r][c] != null)
-                {
-                    if ((bool)gridState[r][c])
-                    {
-                        bool result = true;
-                        int[][] tilesToCheck = GetTilesInDirection(new int[] { r, c }, new int[] { 1, 0 }, (numberInARow - 1));
-                        //int[][] tilesToCheck = { new int[] { r + 1, c }, new int[] { r + 2, c }, new int[] { r + 3, c } };
-                        if (AreViableTiles(gridState, tilesToCheck))
-                            foreach (int[] tile in tilesToCheck)
-                                result &= (bool)gridState[tile[0]][tile[1]];
-                        else
-                            result = false;
-                        if (result)
-                            return false;
                     }
                 }
             }
-        }
+        //vertical
+        if (gridState.Length > numberInARow)
+            for (int r = 0; r < gridState.Length - (numberInARow - 1); r++)
+            {
+                for (int c = 0; c < gridState[r].Length; c++)
+                {
+                    if (gridState[r][c] != null)
+                    {
+                        if ((bool)gridState[r][c])
+                        {
+                            bool result = true;
+                            int[][] tilesToCheck = GetTilesInDirection(new int[] { r, c }, new int[] { 1, 0 }, (numberInARow - 1));
+                            //int[][] tilesToCheck = { new int[] { r + 1, c }, new int[] { r + 2, c }, new int[] { r + 3, c } };
+                            if (AreViableTiles(gridState, tilesToCheck))
+                                foreach (int[] tile in tilesToCheck)
+                                    result &= (bool)gridState[tile[0]][tile[1]];
+                            else
+                                result = false;
+                            if (result)
+                                return false;
+                        }
+                    }
+                }
+            }
         return true;
     }
     public static bool NoThreeInADiagonalBlack(bool?[][] gridState)
     {
         // replace once general functions that take an input are introduced
         int numberInARow = 3;
+        if (gridState.Length < numberInARow || gridState[0].Length < numberInARow)
+        {
+            Debug.Log("Grid not large enough for " + numberInARow + " length diagonal");
+            return true;
+        }
         // right up
         for (int r = 0; r < gridState.Length - (numberInARow - 1); r++)
         {

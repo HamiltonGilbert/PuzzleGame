@@ -15,11 +15,8 @@ MonoBehaviour:
   tilePrefab: {fileID: 2082110037364603164, guid: 10db48e1c8eb6489ea3365ba2a224af2, type: 3}
   ruleNames: 020000000400000005000000
   rows: 3
-  columns: 5
+  columns: 3
   fixedTiles:
   - row: 1
     column: 1
     value: 1
-  - row: 3
-    column: 4
-    value: 0
