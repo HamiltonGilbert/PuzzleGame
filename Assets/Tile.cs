@@ -64,7 +64,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if (!isFixed)
         {
-            state = null;
+            state = false;
             UpdateTile();
         }
     }

@@ -10,12 +10,12 @@ public class Grid : MonoBehaviour
     private int columns;
     private Tile[][] tiles;
 
-    public void CreateGrid(GridData gridData, Solve solve)
+    public void CreateGrid(LevelData levelData, Solve solve)
     {
         // initialize
-        rows = gridData.rows;
-        columns = gridData.columns;
-        tilePrefab = gridData.tilePrefab;
+        rows = levelData.rows;
+        columns = levelData.columns;
+        tilePrefab = levelData.tilePrefab;
 
         // Create physical grid
         int tileDimensions = TileDimensions(rows, columns);
@@ -38,7 +38,7 @@ public class Grid : MonoBehaviour
         }
 
         // set fixed tiles
-        foreach (GridData.Fixed fixedTile in gridData.fixedTiles)
+        foreach (LevelData.Fixed fixedTile in levelData.fixedTiles)
             tiles[fixedTile.row-1][fixedTile.column-1].SetFixed(fixedTile.value);
     }
 

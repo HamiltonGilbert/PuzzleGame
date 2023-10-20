@@ -9,12 +9,12 @@ public class Solve
     public int NumberOfRules { get => rules.Length; }
     private LevelManager levelManager;
 
-    public Solve(GridData gridData, LevelManager levelManager)
+    public Solve(LevelData levelData, LevelManager levelManager)
     {
-        gridState = new bool?[gridData.rows][];
-        for (int i = 0; i < gridData.rows; i++)
-            gridState[i] = new bool?[gridData.columns];
-        rules = getRules(gridData);
+        gridState = new bool?[levelData.rows][];
+        for (int i = 0; i < levelData.rows; i++)
+            gridState[i] = new bool?[levelData.columns];
+        rules = getRules(levelData);
         this.levelManager = levelManager;
     }
 
@@ -23,11 +23,7 @@ public class Solve
         gridState[row][column] = state;
         bool[] results = CheckRules();
         levelManager.UpdateRules(results);
-        if (CheckCompleted(results))
-        {
-            levelManager.LevelComplete();
-            return;
-        }
+        levelManager.SetLevelCompleted(CheckCompleted(results));
     }
 
     public bool[] CheckRules()
@@ -51,12 +47,12 @@ public class Solve
         return true;
     }
 
-    private Func<bool?[][], bool>[] getRules(GridData gridData)
+    private Func<bool?[][], bool>[] getRules(LevelData levelData)
     {
-        rules = new Func<bool?[][], bool>[gridData.ruleNames.Length];
+        rules = new Func<bool?[][], bool>[levelData.ruleNames.Length];
         for (int i = 0; i < rules.Length; i++)
         {
-            rules[i] = (Func<bool?[][], bool>)Delegate.CreateDelegate(typeof(Func<bool?[][], bool>), typeof(Rules).GetMethod(gridData.ruleNames[i].ToString()));
+            rules[i] = (Func<bool?[][], bool>)Delegate.CreateDelegate(typeof(Func<bool?[][], bool>), typeof(Rules).GetMethod(levelData.ruleNames[i].ToString()));
         }
         return rules;
     }

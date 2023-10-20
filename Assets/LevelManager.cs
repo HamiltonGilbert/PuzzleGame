@@ -7,33 +7,58 @@ using System;
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] private Grid grid;
-    [SerializeField] private GameObject gameOverScreen;
-    [SerializeField] private Button UndoMoveBtn;
-    [SerializeField] private GridData gridData;
+    [SerializeField] private Button undoMoveBtn;
+    [SerializeField] private Button nextLvlButton;
+    [SerializeField] private Button backLvlButton;
+    [SerializeField] private LevelData[] levelData;
     [SerializeField] private Image[] ruleImages;
     [SerializeField] private Color incompleteColor = new Color(50, 255, 50, 100);
     [SerializeField] private Color completeColor = new Color(50, 255, 50, 100);
     private Solve solve;
+    private int currentLevel = 0;
+    //private int levelsCompleted = 0;
 
-    public void Start()
+    public void Start() { SetLevel(currentLevel); }
+    public void UndoMove() { grid.ResetGrid(); }
+    public void NextLvlBtnPressed() { SetLevel(currentLevel + 1); }
+    public void BackLvlBtnPressed() { SetLevel(currentLevel - 1); }
+
+    public void SetLevelCompleted(bool state)
     {
-        gameOverScreen.SetActive(false);
-        solve = new Solve(gridData, this);
-        grid.CreateGrid(gridData, solve);
+        //if (currentLevel > levelsCompleted)
+        //    levelsCompleted = currentLevel;
+        //grid.EndLevel();
+        if (currentLevel < levelData.Length - 1)
+            nextLvlButton.interactable = state;
+        else
+            EndGame();
+        
+        //undoMoveBtn.interactable = false;
+    }
+    public void SetLevel(int level)
+    {
+        if (level >= levelData.Length)
+        {
+            Debug.Log("level " + level + " is out of bounds" + levelData.Length);
+            return;
+        }
+        //if (level > levelsCompleted)
+        //    nextLvlButton.interactable = false;
+        nextLvlButton.interactable = false;
+        if (level == 0)
+            backLvlButton.interactable = false;
+        else
+            backLvlButton.interactable = true;
+        undoMoveBtn.interactable = true;
+        solve = new Solve(levelData[level], this);
+        grid.CreateGrid(levelData[level], solve);
         HideRules();
         UpdateRules(solve.CheckRules());
+        currentLevel = level;
     }
-
-    public void UndoMove()
+    public void EndGame()
     {
-        grid.ResetGrid();
-    }
-
-    public void LevelComplete()
-    {
-        grid.EndLevel();
-        gameOverScreen.SetActive(true);
-        UndoMoveBtn.interactable = false;
+        // TODO
     }
 
     public void UpdateRules(bool[] results)
