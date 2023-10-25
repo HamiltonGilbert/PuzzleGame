@@ -16,16 +16,16 @@ public static class Rules
     //    for ()
     //}
 
-    public static bool HasFiveBlack(bool?[][] gridState)
+    public static bool HasFiveBlack(GridData gridData)
     {
         int blackTiles = 0;
-        for (int r = 0; r < gridState.Length; r++)
+        for (int r = 0; r < gridData.gridState.Length; r++)
         {
-            for (int c = 0; c < gridState[r].Length; c++)
+            for (int c = 0; c < gridData.gridState[r].Length; c++)
             {
-                if (gridState[r][c] != null)
+                if (gridData.gridState[r][c] != null)
                 {
-                    if ((bool) gridState[r][c])
+                    if ((bool)gridData.gridState[r][c])
                         blackTiles++;
                     if (blackTiles == 5)
                         return true;
@@ -34,16 +34,16 @@ public static class Rules
         }
         return false;
     }
-    public static bool LessThanSevenBlack(bool?[][] gridState)
+    public static bool LessThanSevenBlack(GridData gridData)
     {
         int blackTiles = 0;
-        for (int r = 0; r < gridState.Length; r++)
+        for (int r = 0; r < gridData.gridState.Length; r++)
         {
-            for (int c = 0; c < gridState[r].Length; c++)
+            for (int c = 0; c < gridData.gridState[r].Length; c++)
             {
-                if (gridState[r][c] != null)
+                if (gridData.gridState[r][c] != null)
                 {
-                    if ((bool)gridState[r][c])
+                    if ((bool)gridData.gridState[r][c])
                         blackTiles++;
                 }
             }
@@ -52,16 +52,16 @@ public static class Rules
             return true;
         return false;
     }
-    public static bool LessThanSevenWhite(bool?[][] gridState)
+    public static bool LessThanSevenWhite(GridData gridData)
     {
         int whiteTiles = 0;
-        for (int r = 0; r < gridState.Length; r++)
+        for (int r = 0; r < gridData.gridState.Length; r++)
         {
-            for (int c = 0; c < gridState[r].Length; c++)
+            for (int c = 0; c < gridData.gridState[r].Length; c++)
             {
-                if (gridState[r][c] != null)
+                if (gridData.gridState[r][c] != null)
                 {
-                    if (!(bool)gridState[r][c])
+                    if (!(bool)gridData.gridState[r][c])
                         whiteTiles++;
                 }
             }
@@ -70,22 +70,22 @@ public static class Rules
             return true;
         return false;
     }
-    public static bool NoSingleBlack(bool?[][] gridState)
+    public static bool NoSingleBlack(GridData gridData)
     {
-        for (int r = 0; r < gridState.Length; r++)
+        for (int r = 0; r < gridData.gridState.Length; r++)
         {
-            for (int c = 0; c < gridState[r].Length; c++)
+            for (int c = 0; c < gridData.gridState[r].Length; c++)
             {
-                if (gridState[r][c] != null)
+                if (gridData.gridState[r][c] != null)
                 {
-                    if ((bool)gridState[r][c])
+                    if ((bool)gridData.gridState[r][c])
                     {
-                        List<int[]> neighbors = GetViableNeighbors(gridState, new int[] { r, c });
+                        List<int[]> neighbors = GetViableNeighbors(gridData.gridState, new int[] { r, c });
                         bool isBlack = false;
                         foreach (int[] neighbor in neighbors)
                         {
-                            if (gridState[neighbor[0]][neighbor[1]] != null)
-                                if ((bool)gridState[neighbor[0]][neighbor[1]])
+                            if (gridData.gridState[neighbor[0]][neighbor[1]] != null)
+                                if ((bool)gridData.gridState[neighbor[0]][neighbor[1]])
                                     isBlack = true;
                         }
                         if (!isBlack)
@@ -96,22 +96,22 @@ public static class Rules
         }
         return true;
     }
-    public static bool AllBlackConnected(bool?[][] gridState) // TODO
+    public static bool AllBlackConnected(GridData gridData) // TODO
     {
         return true;
-        for (int r = 0; r < gridState.Length; r++)
+        for (int r = 0; r < gridData.gridState.Length; r++)
         {
-            for (int c = 0; c < gridState[r].Length; c++)
+            for (int c = 0; c < gridData.gridState[r].Length; c++)
             {
-                if (gridState[r][c] != null)
+                if (gridData.gridState[r][c] != null)
                 {
-                    if ((bool)gridState[r][c])
+                    if ((bool)gridData.gridState[r][c])
                     {
-                        List<int[]> neighbors = GetViableNeighbors(gridState, new int[] { r, c });
+                        List<int[]> neighbors = GetViableNeighbors(gridData.gridState, new int[] { r, c });
                         bool isBlack = false;
                         foreach (int[] neighbor in neighbors)
                         {
-                            if ((bool)gridState[neighbor[0]][neighbor[1]])
+                            if ((bool)gridData.gridState[neighbor[0]][neighbor[1]])
                                 isBlack = true;
                         }
                         if (!isBlack)
@@ -122,27 +122,27 @@ public static class Rules
         }
         return true;
     }
-    public static bool NoFourInARowBlack(bool?[][] gridState)
+    public static bool NoFourInARowBlack(GridData gridData)
     {
         // replace once general functions that take an input are introduced
         int numberInARow = 4;
 
         // horizontal
-        if (gridState[0].Length > numberInARow)
-            for (int r = 0; r < gridState.Length; r++)
+        if (gridData.gridState[0].Length > numberInARow)
+            for (int r = 0; r < gridData.gridState.Length; r++)
             {
-                for (int c = 0; c < gridState[r].Length - (numberInARow - 1); c++)
+                for (int c = 0; c < gridData.gridState[r].Length - (numberInARow - 1); c++)
                 {
-                    if (gridState[r][c] != null)
+                    if (gridData.gridState[r][c] != null)
                     {
-                        if ((bool)gridState[r][c])
+                        if ((bool)gridData.gridState[r][c])
                         {
                             bool result = true;
                             int[][] tilesToCheck = GetTilesInDirection(new int[] { r, c }, new int[] { 0, 1 }, (numberInARow - 1));
                             //int[][] tilesToCheck = { new int[] { r, c + 1 }, new int[] { r, c + 2 }, new int[] { r, c + 3 } };
-                            if (AreViableTiles(gridState, tilesToCheck))
+                            if (AreViableTiles(gridData.gridState, tilesToCheck))
                                 foreach (int[] tile in tilesToCheck)
-                                    result &= (bool)gridState[tile[0]][tile[1]];
+                                    result &= (bool)gridData.gridState[tile[0]][tile[1]];
                             else
                                 result = false;
                             if (result)
@@ -153,21 +153,21 @@ public static class Rules
                 }
             }
         //vertical
-        if (gridState.Length > numberInARow)
-            for (int r = 0; r < gridState.Length - (numberInARow - 1); r++)
+        if (gridData.gridState.Length > numberInARow)
+            for (int r = 0; r < gridData.gridState.Length - (numberInARow - 1); r++)
             {
-                for (int c = 0; c < gridState[r].Length; c++)
+                for (int c = 0; c < gridData.gridState[r].Length; c++)
                 {
-                    if (gridState[r][c] != null)
+                    if (gridData.gridState[r][c] != null)
                     {
-                        if ((bool)gridState[r][c])
+                        if ((bool)gridData.gridState[r][c])
                         {
                             bool result = true;
                             int[][] tilesToCheck = GetTilesInDirection(new int[] { r, c }, new int[] { 1, 0 }, (numberInARow - 1));
                             //int[][] tilesToCheck = { new int[] { r + 1, c }, new int[] { r + 2, c }, new int[] { r + 3, c } };
-                            if (AreViableTiles(gridState, tilesToCheck))
+                            if (AreViableTiles(gridData.gridState, tilesToCheck))
                                 foreach (int[] tile in tilesToCheck)
-                                    result &= (bool)gridState[tile[0]][tile[1]];
+                                    result &= (bool)gridData.gridState[tile[0]][tile[1]];
                             else
                                 result = false;
                             if (result)
@@ -178,30 +178,30 @@ public static class Rules
             }
         return true;
     }
-    public static bool NoThreeInADiagonalBlack(bool?[][] gridState)
+    public static bool NoThreeInADiagonalBlack(GridData gridData)
     {
         // replace once general functions that take an input are introduced
         int numberInARow = 3;
-        if (gridState.Length < numberInARow || gridState[0].Length < numberInARow)
+        if (gridData.gridState.Length < numberInARow || gridData.gridState[0].Length < numberInARow)
         {
             Debug.Log("Grid not large enough for " + numberInARow + " length diagonal");
             return true;
         }
         // right up
-        for (int r = 0; r < gridState.Length - (numberInARow - 1); r++)
+        for (int r = 0; r < gridData.gridState.Length - (numberInARow - 1); r++)
         {
-            for (int c = 0; c < gridState[r].Length - (numberInARow - 1); c++)
+            for (int c = 0; c < gridData.gridState[r].Length - (numberInARow - 1); c++)
             {
-                if (gridState[r][c] != null)
+                if (gridData.gridState[r][c] != null)
                 {
-                    if ((bool)gridState[r][c])
+                    if ((bool)gridData.gridState[r][c])
                     {
                         bool result = true;
                         int[][] tilesToCheck = GetTilesInDirection(new int[] { r, c }, new int[] { 1, 1 }, (numberInARow - 1));
                         //int[][] tilesToCheck = { new int[] { r + 1, c + 1 }, new int[] { r + 2, c + 2 } };
-                        if (AreViableTiles(gridState, tilesToCheck))
+                        if (AreViableTiles(gridData.gridState, tilesToCheck))
                             foreach (int[] tile in tilesToCheck)
-                                result &= (bool)gridState[tile[0]][tile[1]];
+                                result &= (bool)gridData.gridState[tile[0]][tile[1]];
                         else
                             result = false;
                         if (result)
@@ -212,20 +212,20 @@ public static class Rules
             }
         }
         //right down
-        for (int r = (numberInARow - 1); r < gridState.Length; r++)
+        for (int r = (numberInARow - 1); r < gridData.gridState.Length; r++)
         {
-            for (int c = 0; c < gridState[r].Length - (numberInARow - 1); c++)
+            for (int c = 0; c < gridData.gridState[r].Length - (numberInARow - 1); c++)
             {
-                if (gridState[r][c] != null)
+                if (gridData.gridState[r][c] != null)
                 {
-                    if ((bool)gridState[r][c])
+                    if ((bool)gridData.gridState[r][c])
                     {
                         bool result = true;
                         int[][] tilesToCheck = GetTilesInDirection(new int[] { r, c }, new int[] { -1, 1 }, (numberInARow - 1));
                         //int[][] tilesToCheck = { new int[] { r + -1, c + 1 }, new int[] { r + -2, c + 2 } };
-                        if (AreViableTiles(gridState, tilesToCheck))
+                        if (AreViableTiles(gridData.gridState, tilesToCheck))
                             foreach (int[] tile in tilesToCheck)
-                                result &= (bool)gridState[tile[0]][tile[1]];
+                                result &= (bool)gridData.gridState[tile[0]][tile[1]];
                         else
                             result = false;
                         if (result)

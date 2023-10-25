@@ -8,9 +8,9 @@ using static Rules;
 public class LevelData : ScriptableObject
 {
     public GameObject tilePrefab;
-    public RuleName[] ruleNames = new RuleName[0];
     public int rows = 1;
     public int columns = 1;
+    public RuleName[] ruleNames = new RuleName[0];
     public Remove[] removeRanges;
     public Fixed[] fixedTiles;
     public Numbered[] numberedTiles;
