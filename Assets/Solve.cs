@@ -17,16 +17,20 @@ public class Solve
         levelManager.UpdateRules(CheckRules());
     }
 
-    public void MakeMove(int row, int column, bool state)
+    public void MakeMove()
     {
-        gridData.UpdateTileState(row, column, state);
         bool[] results = CheckRules();
         levelManager.UpdateRules(results);
         levelManager.SetLevelCompleted(CheckCompleted(results));
     }
+    public void SetState(int row, int column, bool state)
+    {
+        gridData.UpdateTileState(row, column, state);
+    }
 
     public bool[] CheckRules()
     {
+        Debug.Log("Check Rules");
         bool[] result = new bool[rules.Length];
         for (int i = 0; i < rules.Length; i++)
         {

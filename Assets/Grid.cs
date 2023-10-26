@@ -32,9 +32,16 @@ public class Grid : MonoBehaviour
             for (int c = 0; c < levelData.columns; c++)
                 tempGridState[r][c] = false;
         }
+        // get numbered tiles
+        LevelData.Numbered[] numberedTiles = levelData.numberedTiles;
+        int[][] numberedTilesIndices = new int[numberedTiles.Length][];
+        for (int i = 0; i < numberedTilesIndices.Length; i++)
+        {
+            numberedTilesIndices[i] = new int[] { numberedTiles[i].row, numberedTiles[i].column, numberedTiles[i].number };
+        }
 
         // create Solve and blank GridData
-        GridData gridData = new(tempGridState);
+        GridData gridData = new(tempGridState, numberedTilesIndices);
         Solve solve = new(levelData, levelManager, gridData);
 
         // create physical grid
@@ -65,14 +72,10 @@ public class Grid : MonoBehaviour
             gridData.UpdateTileState(fixedTile.row - 1, fixedTile.column - 1, fixedTile.state);
         }
         // set numbered tiles
-        LevelData.Numbered[] numberedTiles = levelData.numberedTiles;
-        int[][] numberedTilesIndices = new int[numberedTiles.Length][];
         for (int i = 0; i < numberedTilesIndices.Length; i++)
         {
-            numberedTilesIndices[i] = new int[] { numberedTiles[i].row, numberedTiles[i].column, numberedTiles[i].number };
             tiles[numberedTiles[i].row - 1][numberedTiles[i].column - 1].SetNumber(numberedTiles[i].number);
         }
-        gridData.SetNumberedTiles(numberedTilesIndices);
         // remove tiles
         foreach (LevelData.Remove range in levelData.removeRanges)
             for (int i=range.start-1; i < range.finish; i++)

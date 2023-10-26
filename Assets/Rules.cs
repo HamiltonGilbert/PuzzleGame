@@ -93,30 +93,50 @@ public static class Rules
         return true;
     }
     // BLACK CONNECTED
-    // TODO
     public static bool AllBlackConnected(GridData gridData)
     {
-        return true;
+        // get black tile to start
+        int[] startTile = null;
         for (int r = 0; r < gridData.gridState.Length; r++)
         {
             for (int c = 0; c < gridData.gridState[r].Length; c++)
-            {
                 if (gridData.gridState[r][c] != null)
-                {
-                    if ((bool)gridData.gridState[r][c])
+                    if (gridData.gridState[r][c] == true)
                     {
-                        List<int[]> neighbors = GetViableNeighbors(gridData.gridState, new int[] { r, c });
-                        bool isBlack = false;
-                        foreach (int[] neighbor in neighbors)
-                        {
-                            if ((bool)gridData.gridState[neighbor[0]][neighbor[1]])
-                                isBlack = true;
-                        }
-                        if (!isBlack)
-                            return false;
+                        startTile = new int[] { r, c };
+                        break;
                     }
-                }
-            }
+            if (startTile != null)
+                break;
+        }
+        if (startTile == null)
+            return true;
+
+        Stack<int[]> toVisit = new();
+        toVisit.Push(startTile);
+        List<int[]> visited = new();
+
+        // visit all black connected to start tile
+        int[] currentIndex;
+        while (toVisit.Count != 0)
+        {
+            currentIndex = toVisit.Pop();
+            visited.Add(currentIndex);
+            foreach (int[] index in GetViableNeighbors(gridData.gridState, currentIndex))
+                if (!visited.Any(p => p.SequenceEqual(index)) && gridData.gridState[index[0]][index[1]] == true)
+                    toVisit.Push(index);
+        }
+
+        // check for black not visited
+        for (int r = 0; r < gridData.gridState.Length; r++)
+        {
+            for (int c = 0; c < gridData.gridState[r].Length; c++)
+                if (gridData.gridState[r][c] != null)
+                    if (gridData.gridState[r][c] == true)
+                        if (!visited.Any(p => p.SequenceEqual(new int[] { r, c })))
+                        {
+                            return false;
+                        }
         }
         return true;
     }
@@ -237,7 +257,44 @@ public static class Rules
     // NUMBERS
     public static bool SameNumbersConnected(GridData gridData)
     {
-        return true;
+        int[][] numberedTiles = gridData.numberedTilesIndices;
+
+        Stack<int[]> toVisit = new();
+        toVisit.Push(numberedTiles[0]);
+        List<int[]> visited = new();
+
+        // TODO temp only first numbered tile
+        int[] currentNumbered = numberedTiles[0];
+        
+        // get list of same numbered tiles
+        int number = currentNumbered[2];
+        List<int[]> IndicesOfNumber = new();
+        foreach (int[] tile in numberedTiles)
+            if (tile[2] == number)
+                IndicesOfNumber.Add(new int[] { tile[0], tile[1] });
+
+        // visit all with the same state connected to start tile until other of number are found
+        bool state = (bool)gridData.gridState[currentNumbered[0]][currentNumbered[1]];
+        int[] currentIndex;
+        int numberConnected = 0;
+        while (toVisit.Count != 0)
+        {
+            currentIndex = toVisit.Pop();
+            // if index is the same number
+            if (!IndicesOfNumber.Any(p => p.SequenceEqual(currentIndex)))
+                numberConnected++;
+            if (numberConnected >= IndicesOfNumber.Count)
+            {
+                Debug.Log(numberConnected);
+                return true;
+            }
+
+            visited.Add(currentIndex);
+            foreach (int[] index in GetViableNeighbors(gridData.gridState, currentIndex))
+                if (!visited.Any(p => p.SequenceEqual(index)) && gridData.gridState[index[0]][index[1]] == state)
+                    toVisit.Push(index);
+        }
+        return false;
     }
     public static bool NumbersAreaSize(GridData gridData)
     {

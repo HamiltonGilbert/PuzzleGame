@@ -33,6 +33,8 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler
                 SetState(true);
             else if (eventData.button == PointerEventData.InputButton.Right)
                 SetState(false);
+        UpdateTile();
+        solve.MakeMove();
     }
     // TODO
     public void OnPointerEnter(PointerEventData eventData)
@@ -79,7 +81,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler
     }
     private void UpdateTile()
     {
-        solve.MakeMove(row, column, state);
+        solve.SetState(row, column, state);
         if (state)
             image.color = activeColor;
         else
