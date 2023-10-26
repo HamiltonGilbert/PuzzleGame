@@ -5,18 +5,19 @@ using UnityEngine;
 public class GridData
 {
     public bool?[][] gridState;
-    public int[][] numberedTiles; // [row, column, number]
+    public int[][] numberedTilesIndices; // [row, column, number]
 
-    public GridData(bool?[][] gridState, LevelData.Numbered[] numberedTiles)
+    public GridData(bool?[][] gridState)
     {
         this.gridState = gridState;
-        this.numberedTiles = new int[numberedTiles.Length][];
-        for (int i = 0; i < numberedTiles.Length; i++)
-            this.numberedTiles[i] = new int[] { numberedTiles[i].row, numberedTiles[i].column, numberedTiles[i].number };
     }
-
-    public void UpdateGridState(int row, int column, bool? state)
+    // updated from Solve
+    public void UpdateTileState(int row, int column, bool state)
     {
         gridState[row][column] = state;
+    }
+    public void SetNumberedTiles(int[][] numberedTilesIndices)
+    {
+        this.numberedTilesIndices = numberedTilesIndices;
     }
 }

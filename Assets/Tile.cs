@@ -5,41 +5,43 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
-public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class Tile : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler
 {
     private int row;
     private int column;
     private Solve solve;
     [SerializeField] private Image image;
     [SerializeField] private GameObject fixedimage;
-    [SerializeField] private Color pressedColor;
+    [SerializeField] private TMP_Text text;
     [SerializeField] private Color activeColor;
     [SerializeField] private Color inactiveColor;
-    [SerializeField] private Color nullColor;
 
-    //private bool defaultState = false;
-    private bool? state;
+    private bool state = false;
     private bool isFixed = false;
+    private bool isNumbered = false;
 
     public void CreateTile(int row, int column, Solve solve)
     {
         this.row = row;
         this.column = column;
         this.solve = solve;
-        ResetState();
     }
     public void OnPointerDown(PointerEventData eventData)
-    {
-        //if (!isFixed)
-        //    image.color = pressedColor;
-    }
-    public void OnPointerUp(PointerEventData eventData)
     {
         if (!isFixed)
             if (eventData.button == PointerEventData.InputButton.Left)
                 SetState(true);
             else if (eventData.button == PointerEventData.InputButton.Right)
                 SetState(false);
+    }
+    // TODO
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        //if (!isFixed)
+        //    if (eventData.button == PointerEventData.InputButton.Left)
+        //        SetState(true);
+        //    else if (eventData.button == PointerEventData.InputButton.Right)
+        //        SetState(false);
     }
 
     public void SetFixed(bool state)
@@ -49,13 +51,20 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         fixedimage.SetActive(true);
         UpdateTile();
     }
+    public void SetNumber(int number)
+    {
+        isNumbered = true;
+        text.text = number.ToString();
+        text.gameObject.SetActive(true);
+        UpdateTile();
+    }
 
     //private void SetState(bool state)
     //{
     //    this.state = state;
     //    UpdateColor();
     //}
-    private void SetState(bool? newState)
+    private void SetState(bool newState)
     {
         state = newState;
         UpdateTile();
@@ -71,12 +80,12 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private void UpdateTile()
     {
         solve.MakeMove(row, column, state);
-        if (state == null)
-            image.color = nullColor;
-        else if ((bool) state)
+        if (state)
             image.color = activeColor;
         else
             image.color = inactiveColor;
+        if (isNumbered)
+            text.color = text.color = new Color(1f - image.color.r, 1f - image.color.g, 1f - image.color.b, 1f);
     }
 }
 

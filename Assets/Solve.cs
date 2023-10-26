@@ -9,20 +9,17 @@ public class Solve
     public int NumberOfRules { get => rules.Length; }
     private readonly LevelManager levelManager;
 
-    public Solve(LevelData levelData, LevelManager levelManager)
+    public Solve(LevelData levelData, LevelManager levelManager, GridData gridData)
     {
-        bool?[][]tempGridState = new bool?[levelData.rows][];
-        for (int i = 0; i < levelData.rows; i++)
-            tempGridState[i] = new bool?[levelData.columns];
-        gridData = new GridData(tempGridState, levelData.numberedTiles);
-
-        rules = getRules(levelData);
         this.levelManager = levelManager;
+        this.gridData = gridData;
+        rules = GetRules(levelData);
+        levelManager.UpdateRules(CheckRules());
     }
 
-    public void MakeMove(int row, int column, bool? state)
+    public void MakeMove(int row, int column, bool state)
     {
-        gridData.UpdateGridState(row, column, state);
+        gridData.UpdateTileState(row, column, state);
         bool[] results = CheckRules();
         levelManager.UpdateRules(results);
         levelManager.SetLevelCompleted(CheckCompleted(results));
@@ -37,27 +34,45 @@ public class Solve
         }
         return result;
     }
-    // TODO not needed once null tiles are just removed
+    
     public bool CheckCompleted(bool[] results)
     {
         foreach (bool result in results)
             if (!result)
                 return false;
-        foreach (bool?[] column in gridData.gridState)
-            foreach (bool? state in column)
-                if (state == null)
-                    return false;
         return true;
+        //foreach (bool?[] column in gridData.gridState)
+        //    foreach (bool? state in column)
+        //        if (state == null)
+        //            return false;
     }
 
-    private Func<GridData, bool>[] getRules(LevelData levelData)
+    private Func<GridData, bool>[] GetRules(LevelData levelData)
     {
         rules = new Func<GridData, bool>[levelData.ruleNames.Length];
         for (int i = 0; i < rules.Length; i++)
         {
-            rules[i] = (Func<GridData, bool>)Delegate.CreateDelegate(typeof(Func<bool?[][], bool>), typeof(Rules).GetMethod(levelData.ruleNames[i].ToString()));
+            rules[i] = (Func<GridData, bool>)Delegate.CreateDelegate(typeof(Func<GridData, bool>), typeof(Rules).GetMethod(levelData.ruleNames[i].ToString()));
         }
         return rules;
+    }
+
+    public void PrintGridState()
+    {
+        string result = "";
+        foreach (bool?[] row in gridData.gridState)
+        {
+            string temp = "";
+            foreach (bool? tileState in row)
+            {
+                if (tileState == null)
+                    temp += "|| null ";
+                else
+                    temp += "|| " + tileState.ToString() + " ";
+            }
+            result += temp + "||\n";
+        }
+        Debug.Log(result);
     }
 }
 

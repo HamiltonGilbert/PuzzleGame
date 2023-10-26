@@ -20,14 +20,16 @@ public class LevelData : ScriptableObject
     public struct Remove
     {
         public bool row;
-        public int[] range;
+        public int number;
+        public int start;
+        public int finish;
     }
     [Serializable]
     public struct Fixed
     {
         public int row;
         public int column;
-        public bool value;
+        public bool state;
     }
     [Serializable]
     public struct Numbered

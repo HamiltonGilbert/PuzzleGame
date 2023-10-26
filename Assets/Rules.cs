@@ -6,16 +6,12 @@ using static Helpers;
 
 public static class Rules
 {
-    public enum RuleName { HasFiveBlack, LessThanSevenBlack, LessThanSevenWhite, NoSingleBlack, AllBlackConnected, NoFourInARowBlack, NoThreeInADiagonalBlack };
-    // make these take in a tile instead and have each tile keep information about neighbor tiles?
-    //         then it can stop you from making incorrect moves in real time
-    //public static void AllBlackConnected(Solve solve)
-    //{
-    //    int rows = solve.rows;
-    //    int columns = grid.columns;
-    //    for ()
-    //}
+    public enum RuleName { HasFiveBlack, LessThanSevenBlack, LessThanSevenWhite, NoSingleBlack,
+        AllBlackConnected, NoFourInARowBlack, NoThreeInADiagonalBlack,
+        SameNumbersConnected, NumbersAreaSize
+    };
 
+    // COLOR AMOUNT
     public static bool HasFiveBlack(GridData gridData)
     {
         int blackTiles = 0;
@@ -96,7 +92,9 @@ public static class Rules
         }
         return true;
     }
-    public static bool AllBlackConnected(GridData gridData) // TODO
+    // BLACK CONNECTED
+    // TODO
+    public static bool AllBlackConnected(GridData gridData)
     {
         return true;
         for (int r = 0; r < gridData.gridState.Length; r++)
@@ -234,6 +232,15 @@ public static class Rules
                 }
             }
         }
+        return true;
+    }
+    // NUMBERS
+    public static bool SameNumbersConnected(GridData gridData)
+    {
+        return true;
+    }
+    public static bool NumbersAreaSize(GridData gridData)
+    {
         return true;
     }
 }
