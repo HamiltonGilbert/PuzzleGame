@@ -28,3 +28,12 @@ MonoBehaviour:
   - row: 3
     column: 3
     number: 1
+  - row: 1
+    column: 5
+    number: 1
+  - row: 2
+    column: 2
+    number: 2
+  - row: 3
+    column: 1
+    number: 2

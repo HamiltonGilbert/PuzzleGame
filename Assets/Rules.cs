@@ -257,50 +257,59 @@ public static class Rules
     // NUMBERS
     public static bool SameNumbersConnected(GridData gridData)
     {
-        int[][] numberedTiles = gridData.numberedTilesIndices;
+        List<int[]> newNumberedTiles = new();
+        foreach (int[] index in GetIndices(gridData.numberedTilesIndices))
+            newNumberedTiles.Add(index);
 
-        Stack<int[]> toVisit = new();
-        toVisit.Push(numberedTiles[0]);
-        List<(int, int)> visited = new();
-
-        // TODO temp only first numbered tile
-        int[] currentNumbered = numberedTiles[0];
-        
-        // get list of same numbered tiles
-        int number = currentNumbered[2];
-        List<(int, int)> IndicesOfNumber = new();
-        foreach (int[] tile in numberedTiles)
-            if (tile[2] == number)
-            {
-                IndicesOfNumber.Add((tile[0]-1, tile[1]-1));
-                //Debug.Log($"index: ({tile[0]}, {tile[1]}) Number: {tile[2]}");
-            }
-
-        // visit all with the same state connected to start tile until other of number are found
-        bool state = (bool)gridData.gridState[currentNumbered[0]][currentNumbered[1]];
-        int[] currentIndex;
-        int numberConnected = 0;
-        while (toVisit.Count != 0)
+        while (newNumberedTiles.Count != 0)
         {
-            currentIndex = toVisit.Pop();
-            //Debug.Log($"index: ({currentIndex[0]}, {currentIndex[1]}) {numberConnected}");
-            // if index is the same number
-            if (IndicesOfNumber.Contains((currentIndex[0], currentIndex[1])))
-            {
-                numberConnected++;
-                Debug.Log($"index: ({currentIndex[0]}, {currentIndex[1]}) {numberConnected} || state: {state}, {gridData.GetState(currentIndex)}");
-            }
-            if (numberConnected >= IndicesOfNumber.Count)
-            {
-                return true;
-            }
+            List<int[]> currentNumberedTiles = newNumberedTiles;
+            int[] currentNumbered = currentNumberedTiles[0];
+            Stack<int[]> toVisit = new();
+            toVisit.Push(currentNumbered);
+            List<(int, int)> visited = new();
 
-            visited.Add((currentIndex[0], currentIndex[1]));
-            foreach (int[] index in GetViableNeighbors(gridData.gridState, currentIndex))
-                if (!visited.Contains((index[0], index[1])) && gridData.GetState(index) == state)
-                    toVisit.Push(index);
+            // get list of same numbered tiles
+            int currentNumber = currentNumbered[2];
+            List<(int, int)> IndicesOfNumber = new();
+            newNumberedTiles = new();
+            foreach (int[] tile in currentNumberedTiles)
+                if (tile[2] == currentNumber)
+                {
+                    IndicesOfNumber.Add((tile[0], tile[1]));
+                }
+                else // get all other numbers for next loop
+                    newNumberedTiles.Add(tile);
+
+            // visit all with the same state connected to start tile until others of number are found
+            bool state = (bool)gridData.gridState[currentNumbered[0]][currentNumbered[1]];
+            int[] currentIndex;
+            int numberConnected = 0;
+            bool allFound = false;
+            while (toVisit.Count != 0)
+            {
+                currentIndex = toVisit.Pop();
+                // if index is the same number
+                if (IndicesOfNumber.Contains((currentIndex[0], currentIndex[1])))
+                {
+                    numberConnected++;
+                    //Debug.Log($"index: ({currentIndex[0]}, {currentIndex[1]}) {numberConnected} || state: {state}, {gridData.GetState(currentIndex)}");
+                }
+                //Debug.Log($"index: ({currentIndex[0]}, {currentIndex[1]}) {numberConnected}");
+                if (numberConnected >= IndicesOfNumber.Count)
+                {
+                    allFound = true;
+                    break;
+                }
+
+                visited.Add((currentIndex[0], currentIndex[1]));
+                foreach (int[] index in GetViableNeighbors(gridData.gridState, currentIndex))
+                    if (!visited.Contains((index[0], index[1])) && gridData.GetState(index) == state)
+                        toVisit.Push(index);
+            }
+            if (!allFound) return false;
         }
-        return false;
+        return true;
     }
     public static bool NumbersAreaSize(GridData gridData)
     {
@@ -343,4 +352,68 @@ public static class Helpers
             tiles[i] = new int[] { startTileIndex[0] + (direction[0] * (i + 1)), startTileIndex[1] + (direction[1] * (i + 1)) };
         return tiles;
     }
+    public static int[][] GetIndices(int[][] nonIndexed)
+    {
+        int[][] indices = new int[nonIndexed.Length][];
+        for (int i = 0; i < nonIndexed.Length; i++)
+        {
+            indices[i] = new int[nonIndexed[i].Length];
+            // row, columns
+            indices[i][0] = nonIndexed[i][0] - 1;
+            indices[i][1] = nonIndexed[i][1] - 1;
+            // any other numbers in nonIndexed
+            for (int j = 2; j < nonIndexed[i].Length; j++)
+                indices[i][j] = nonIndexed[i][j];
+        }
+        return indices;
+    }
 }
+
+/*public static bool SameNumbersConnected(GridData gridData)
+    {
+        int[][] numberedTiles = GetIndices(gridData.numberedTilesIndices);
+        foreach (int[] index in numberedTiles)
+            Debug.Log($"index: ({index[0]}, {index[1]}) Number: {index[2]}");
+
+        Stack<int[]> toVisit = new();
+        toVisit.Push(numberedTiles[0]);
+        List<(int, int)> visited = new();
+
+        // TODO temp only first numbered tile
+        int[] currentNumbered = numberedTiles[0];
+        
+        // get list of same numbered tiles
+        int number = currentNumbered[2];
+        List<(int, int)> IndicesOfNumber = new();
+        foreach (int[] tile in numberedTiles)
+            if (tile[2] == number)
+            {
+                IndicesOfNumber.Add((tile[0], tile[1]));
+            }
+
+        // visit all with the same state connected to start tile until other of number are found
+        bool state = (bool)gridData.gridState[currentNumbered[0]][currentNumbered[1]];
+        int[] currentIndex;
+        int numberConnected = 0;
+        while (toVisit.Count != 0)
+        {
+            currentIndex = toVisit.Pop();
+            // if index is the same number
+            if (IndicesOfNumber.Contains((currentIndex[0], currentIndex[1])))
+            {
+                numberConnected++;
+                //Debug.Log($"index: ({currentIndex[0]}, {currentIndex[1]}) {numberConnected} || state: {state}, {gridData.GetState(currentIndex)}");
+            }
+            Debug.Log($"index: ({currentIndex[0]}, {currentIndex[1]}) {numberConnected}");
+            if (numberConnected >= IndicesOfNumber.Count)
+            {
+                return true;
+            }
+
+            visited.Add((currentIndex[0], currentIndex[1]));
+            foreach (int[] index in GetViableNeighbors(gridData.gridState, currentIndex))
+                if (!visited.Contains((index[0], index[1])) && gridData.GetState(index) == state)
+                    toVisit.Push(index);
+        }
+        return false;
+    }*/

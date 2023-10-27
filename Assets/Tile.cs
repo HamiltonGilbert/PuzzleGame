@@ -28,13 +28,19 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler
     }
     public void OnPointerDown(PointerEventData eventData)
     {
+        bool? newState = null;
         if (!isFixed)
-            if (eventData.button == PointerEventData.InputButton.Left)
-                SetState(true);
-            else if (eventData.button == PointerEventData.InputButton.Right)
-                SetState(false);
-        UpdateTile();
-        solve.MakeMove();
+            if (eventData.button == PointerEventData.InputButton.Left && state != true)
+                newState = true;
+            else if (eventData.button == PointerEventData.InputButton.Right && state != false)
+                newState = false;
+        if (newState != null)
+        {
+            SetState((bool)newState);
+            UpdateTile();
+            solve.MakeMove();
+        }
+        
     }
     // TODO
     public void OnPointerEnter(PointerEventData eventData)

@@ -20,12 +20,13 @@ public class Solve
         rules = GetRules(levelData);
         levelManager.UpdateRules(CheckRules());
     }
-
+    // called from tile
     public void MakeMove()
     {
         bool[] results = CheckRules();
         levelManager.UpdateRules(results);
         levelManager.SetLevelCompleted(CheckCompleted(results));
+        //PrintGridState();
     }
     public void SetState(int row, int column, bool state)
     {
@@ -74,8 +75,10 @@ public class Solve
             {
                 if (tileState == null)
                     temp += "|| null ";
+                else if ((bool)tileState)
+                    temp += "|| T ";
                 else
-                    temp += "|| " + tileState.ToString() + " ";
+                    temp += "|| F ";
             }
             result += temp + "||\n";
         }
@@ -104,14 +107,11 @@ public class Solve
         int[][] numberedTilesIndices = new int[numberedTiles.Length][];
         for (int i = 0; i < numberedTilesIndices.Length; i++)
             numberedTilesIndices[i] = new int[] { numberedTiles[i].row, numberedTiles[i].column, numberedTiles[i].number };
-        // create gridData
-        GridData newGridData = new(tempGridState, numberedTilesIndices);
-
         // update fixed tiles
         foreach (LevelData.Fixed fixedTile in levelData.fixedTiles)
-            newGridData.UpdateTileState(fixedTile.row - 1, fixedTile.column - 1, fixedTile.state);
+                tempGridState[fixedTile.row - 1][fixedTile.column - 1] = fixedTile.state;
 
-        return newGridData;
+        return new(tempGridState, numberedTilesIndices);
     }
 }
 
