@@ -24,25 +24,8 @@ public class Grid : MonoBehaviour
         columns = levelData.columns;
         tilePrefab = levelData.tilePrefab;
 
-        // make initial gridState
-        bool?[][] tempGridState = new bool?[levelData.rows][];
-        for (int r = 0; r < levelData.rows; r++)
-        {
-            tempGridState[r] = new bool?[levelData.columns];
-            for (int c = 0; c < levelData.columns; c++)
-                tempGridState[r][c] = false;
-        }
-        // get numbered tiles
-        LevelData.Numbered[] numberedTiles = levelData.numberedTiles;
-        int[][] numberedTilesIndices = new int[numberedTiles.Length][];
-        for (int i = 0; i < numberedTilesIndices.Length; i++)
-        {
-            numberedTilesIndices[i] = new int[] { numberedTiles[i].row, numberedTiles[i].column, numberedTiles[i].number };
-        }
-
-        // create Solve and blank GridData
-        GridData gridData = new(tempGridState, numberedTilesIndices);
-        Solve solve = new(levelData, levelManager, gridData);
+        // create Solve
+        Solve solve = new(levelData, levelManager);
 
         // create physical grid
         int tileDimensions = TileDimensions(rows, columns);
@@ -64,14 +47,15 @@ public class Grid : MonoBehaviour
             tiles[r] = rowTiles;
         }
 
-        // ----- FILL IN Grid AND GridData -----
+        // ----- FILL IN Grid -----
         // set fixed tiles
         foreach (LevelData.Fixed fixedTile in levelData.fixedTiles)
         {
             tiles[fixedTile.row - 1][fixedTile.column - 1].SetFixed(fixedTile.state);
-            gridData.UpdateTileState(fixedTile.row - 1, fixedTile.column - 1, fixedTile.state);
         }
         // set numbered tiles
+        LevelData.Numbered[] numberedTiles = levelData.numberedTiles;
+        int[][] numberedTilesIndices = new int[numberedTiles.Length][];
         for (int i = 0; i < numberedTilesIndices.Length; i++)
         {
             tiles[numberedTiles[i].row - 1][numberedTiles[i].column - 1].SetNumber(numberedTiles[i].number);
@@ -83,15 +67,12 @@ public class Grid : MonoBehaviour
                 if (range.row)
                 {
                     Destroy(tiles[range.number - 1][i].gameObject);
-                    gridData.gridState[range.number - 1][i] = null;
                 }
                 else
                 {
                     Destroy(tiles[i][range.number - 1].gameObject);
-                    gridData.gridState[i][range.number - 1] = null;
                 }
             }
-        //solve.PrintGridState();
     }
 
     public void ResetGrid()

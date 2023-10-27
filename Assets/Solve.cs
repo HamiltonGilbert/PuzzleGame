@@ -2,17 +2,21 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * creates GridData
+*/
+
 public class Solve
 {
-    private GridData gridData;
+    private readonly GridData gridData;
     private Func<GridData, bool>[] rules;
     public int NumberOfRules { get => rules.Length; }
     private readonly LevelManager levelManager;
 
-    public Solve(LevelData levelData, LevelManager levelManager, GridData gridData)
+    public Solve(LevelData levelData, LevelManager levelManager)
     {
         this.levelManager = levelManager;
-        this.gridData = gridData;
+        gridData = Initialize(levelData);
         rules = GetRules(levelData);
         levelManager.UpdateRules(CheckRules());
     }
@@ -30,7 +34,6 @@ public class Solve
 
     public bool[] CheckRules()
     {
-        Debug.Log("Check Rules");
         bool[] result = new bool[rules.Length];
         for (int i = 0; i < rules.Length; i++)
         {
@@ -77,6 +80,38 @@ public class Solve
             result += temp + "||\n";
         }
         Debug.Log(result);
+    }
+
+    public GridData Initialize(LevelData levelData)
+    {
+        // create initial gridState
+        bool?[][] tempGridState = new bool?[levelData.rows][];
+        for (int r = 0; r < levelData.rows; r++)
+        {
+            tempGridState[r] = new bool?[levelData.columns];
+            for (int c = 0; c < levelData.columns; c++)
+                tempGridState[r][c] = false;
+        }
+        // set removed tiles to null
+        foreach (LevelData.Remove range in levelData.removeRanges)
+            for (int i = range.start - 1; i < range.finish; i++)
+                if (range.row)
+                    tempGridState[range.number - 1][i] = null;
+                else
+                    tempGridState[i][range.number - 1] = null;
+        // set numbered tiles
+        LevelData.Numbered[] numberedTiles = levelData.numberedTiles;
+        int[][] numberedTilesIndices = new int[numberedTiles.Length][];
+        for (int i = 0; i < numberedTilesIndices.Length; i++)
+            numberedTilesIndices[i] = new int[] { numberedTiles[i].row, numberedTiles[i].column, numberedTiles[i].number };
+        // create gridData
+        GridData newGridData = new(tempGridState, numberedTilesIndices);
+
+        // update fixed tiles
+        foreach (LevelData.Fixed fixedTile in levelData.fixedTiles)
+            newGridData.UpdateTileState(fixedTile.row - 1, fixedTile.column - 1, fixedTile.state);
+
+        return newGridData;
     }
 }
 

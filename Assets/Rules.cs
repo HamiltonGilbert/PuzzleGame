@@ -80,7 +80,7 @@ public static class Rules
                         bool isBlack = false;
                         foreach (int[] neighbor in neighbors)
                         {
-                            if (gridData.gridState[neighbor[0]][neighbor[1]] != null)
+                            if (gridData.GetState(neighbor) != null)
                                 if ((bool)gridData.gridState[neighbor[0]][neighbor[1]])
                                     isBlack = true;
                         }
@@ -160,7 +160,7 @@ public static class Rules
                             //int[][] tilesToCheck = { new int[] { r, c + 1 }, new int[] { r, c + 2 }, new int[] { r, c + 3 } };
                             if (AreViableTiles(gridData.gridState, tilesToCheck))
                                 foreach (int[] tile in tilesToCheck)
-                                    result &= (bool)gridData.gridState[tile[0]][tile[1]];
+                                    result &= (bool)gridData.GetState(tile);
                             else
                                 result = false;
                             if (result)
@@ -185,7 +185,7 @@ public static class Rules
                             //int[][] tilesToCheck = { new int[] { r + 1, c }, new int[] { r + 2, c }, new int[] { r + 3, c } };
                             if (AreViableTiles(gridData.gridState, tilesToCheck))
                                 foreach (int[] tile in tilesToCheck)
-                                    result &= (bool)gridData.gridState[tile[0]][tile[1]];
+                                    result &= (bool)gridData.GetState(tile);
                             else
                                 result = false;
                             if (result)
@@ -261,17 +261,20 @@ public static class Rules
 
         Stack<int[]> toVisit = new();
         toVisit.Push(numberedTiles[0]);
-        List<int[]> visited = new();
+        List<(int, int)> visited = new();
 
         // TODO temp only first numbered tile
         int[] currentNumbered = numberedTiles[0];
         
         // get list of same numbered tiles
         int number = currentNumbered[2];
-        List<int[]> IndicesOfNumber = new();
+        List<(int, int)> IndicesOfNumber = new();
         foreach (int[] tile in numberedTiles)
             if (tile[2] == number)
-                IndicesOfNumber.Add(new int[] { tile[0], tile[1] });
+            {
+                IndicesOfNumber.Add((tile[0]-1, tile[1]-1));
+                //Debug.Log($"index: ({tile[0]}, {tile[1]}) Number: {tile[2]}");
+            }
 
         // visit all with the same state connected to start tile until other of number are found
         bool state = (bool)gridData.gridState[currentNumbered[0]][currentNumbered[1]];
@@ -280,18 +283,21 @@ public static class Rules
         while (toVisit.Count != 0)
         {
             currentIndex = toVisit.Pop();
+            //Debug.Log($"index: ({currentIndex[0]}, {currentIndex[1]}) {numberConnected}");
             // if index is the same number
-            if (!IndicesOfNumber.Any(p => p.SequenceEqual(currentIndex)))
+            if (IndicesOfNumber.Contains((currentIndex[0], currentIndex[1])))
+            {
                 numberConnected++;
+                Debug.Log($"index: ({currentIndex[0]}, {currentIndex[1]}) {numberConnected} || state: {state}, {gridData.GetState(currentIndex)}");
+            }
             if (numberConnected >= IndicesOfNumber.Count)
             {
-                Debug.Log(numberConnected);
                 return true;
             }
 
-            visited.Add(currentIndex);
+            visited.Add((currentIndex[0], currentIndex[1]));
             foreach (int[] index in GetViableNeighbors(gridData.gridState, currentIndex))
-                if (!visited.Any(p => p.SequenceEqual(index)) && gridData.gridState[index[0]][index[1]] == state)
+                if (!visited.Contains((index[0], index[1])) && gridData.GetState(index) == state)
                     toVisit.Push(index);
         }
         return false;

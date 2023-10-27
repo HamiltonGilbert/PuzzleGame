@@ -1518,7 +1518,7 @@ PrefabInstance:
       objectReference: {fileID: 1682158376}
     - target: {fileID: 1038398966163220606, guid: 2e3727922b6fe4e9bb1384e54917621f, type: 3}
       propertyPath: levelData.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1038398966163220606, guid: 2e3727922b6fe4e9bb1384e54917621f, type: 3}
       propertyPath: ruleImages.Array.size
@@ -1531,17 +1531,21 @@ PrefabInstance:
     - target: {fileID: 1038398966163220606, guid: 2e3727922b6fe4e9bb1384e54917621f, type: 3}
       propertyPath: levelData.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: 2b07d7d08f36147428365faad2e0a9e2, type: 2}
+      objectReference: {fileID: 11400000, guid: 576c6308d11ea49d48460809627e5e5b, type: 2}
     - target: {fileID: 1038398966163220606, guid: 2e3727922b6fe4e9bb1384e54917621f, type: 3}
       propertyPath: levelData.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: c194194103d664516b395c99ae886e6a, type: 2}
+      objectReference: {fileID: 11400000, guid: 2b07d7d08f36147428365faad2e0a9e2, type: 2}
     - target: {fileID: 1038398966163220606, guid: 2e3727922b6fe4e9bb1384e54917621f, type: 3}
       propertyPath: levelData.Array.data[2]
       value: 
-      objectReference: {fileID: 11400000, guid: 75aba164d3c71447b819137013a0b1b0, type: 2}
+      objectReference: {fileID: 11400000, guid: c194194103d664516b395c99ae886e6a, type: 2}
     - target: {fileID: 1038398966163220606, guid: 2e3727922b6fe4e9bb1384e54917621f, type: 3}
       propertyPath: levelData.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 75aba164d3c71447b819137013a0b1b0, type: 2}
+    - target: {fileID: 1038398966163220606, guid: 2e3727922b6fe4e9bb1384e54917621f, type: 3}
+      propertyPath: levelData.Array.data[4]
       value: 
       objectReference: {fileID: 11400000, guid: dcf1bc955058d429e82660f94c240a4c, type: 2}
     - target: {fileID: 1038398966163220606, guid: 2e3727922b6fe4e9bb1384e54917621f, type: 3}

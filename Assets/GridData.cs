@@ -17,4 +17,8 @@ public class GridData
     {
         gridState[row][column] = state;
     }
+    public bool? GetState(int[] index)
+    {
+        return gridState[index[0]][index[1]];
+    }
 }

@@ -13,7 +13,18 @@ MonoBehaviour:
   m_Name: TestLevelData
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 2082110037364603164, guid: 10db48e1c8eb6489ea3365ba2a224af2, type: 3}
-  ruleNames: 02000000000000000600000005000000
   rows: 3
   columns: 5
-  fixedTiles: []
+  ruleNames: 00000000050000000400000007000000
+  removeRanges: []
+  fixedTiles:
+  - row: 3
+    column: 3
+    state: 1
+  numberedTiles:
+  - row: 1
+    column: 1
+    number: 1
+  - row: 3
+    column: 3
+    number: 1
