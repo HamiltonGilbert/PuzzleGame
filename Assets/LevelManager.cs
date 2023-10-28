@@ -16,24 +16,38 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private Button undoMoveBtn;
     [SerializeField] private Button nextLvlButton;
     [SerializeField] private Button backLvlButton;
-    [SerializeField] private LevelData[] levelData;
+    [SerializeField] private AreaData[] areaDatas;
     [SerializeField] private Image[] ruleImages;
     [SerializeField] private Color incompleteColor = new Color(50, 255, 50, 100);
     [SerializeField] private Color completeColor = new Color(50, 255, 50, 100);
-    private int currentLevelIndex = 0;
+    private int currentLevelIndex;
+    private int currentAreaIndex;
+    private LevelData currentLevel;
     //private int levelsCompleted = 0;
 
-    public void Start() { SetLevel(currentLevelIndex); }
+    public void Start() { SetArea(0); }
     public void UndoMove() { grid.ResetGrid(); }
     public void NextLvlBtnPressed() { SetLevel(currentLevelIndex + 1); }
     public void BackLvlBtnPressed() { SetLevel(currentLevelIndex - 1); }
 
+    public void SetArea(int areaIndex)
+    {
+        currentAreaIndex = areaIndex;
+        if (areaIndex >= areaDatas.Length)
+        {
+            Debug.Log("area " + areaIndex + " is out of bounds" + areaDatas.Length);
+            return;
+        }
+        areaDatas[currentAreaIndex].Initialize();
+        SetLevel(0);
+    }
+
     public void SetLevel(int levelIndex)
     {
         currentLevelIndex = levelIndex;
-        if (levelIndex >= levelData.Length)
+        if (levelIndex >= areaDatas[currentAreaIndex].NumOfLevels())
         {
-            Debug.Log("level " + levelIndex + " is out of bounds" + levelData.Length);
+            Debug.Log("level " + levelIndex + " is out of bounds" + areaDatas[currentAreaIndex].NumOfLevels());
             return;
         }
         //if (level > levelsCompleted)
@@ -45,7 +59,9 @@ public class LevelManager : MonoBehaviour
             backLvlButton.interactable = true;
         undoMoveBtn.interactable = true;
 
-        grid.CreateGrid(levelData[levelIndex], this);
+        currentLevel = areaDatas[currentAreaIndex].GetLevel(currentLevelIndex);
+
+        grid.CreateGrid(currentLevel, this);
         HideRules();
     }
     public void EndGame()
@@ -65,7 +81,7 @@ public class LevelManager : MonoBehaviour
     }
     public void HideRules()
     {
-        for (int i = ruleImages.Length; i > levelData[currentLevelIndex].ruleNames.Length; i--)
+        for (int i = ruleImages.Length; i > areaDatas[currentAreaIndex].GetRuleNames().Length; i--)
         {
             ruleImages[i - 1].color = new Color (0, 0, 0, 0);
         }
@@ -73,10 +89,7 @@ public class LevelManager : MonoBehaviour
 
     public void SetLevelCompleted(bool state)
     {
-        //if (currentLevel > levelsCompleted)
-        //    levelsCompleted = currentLevel;
-        //grid.EndLevel();
-        if (currentLevelIndex < levelData.Length - 1)
+        if (currentLevelIndex < areaDatas[currentAreaIndex].NumOfLevels() - 1)
             nextLvlButton.interactable = state;
         else
             EndGame();

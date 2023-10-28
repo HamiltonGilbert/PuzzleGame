@@ -86,7 +86,7 @@ public class Grid : MonoBehaviour
     {
         // Replace with canvas-based sizing
         int width = 920 / columns;
-        int height = 632 / rows;
+        int height = 560 / rows;
         if (width < height)
             return width;
         return height;

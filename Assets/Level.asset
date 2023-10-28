@@ -10,18 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6f8d92f6511be48a9af22f0366975f54, type: 3}
-  m_Name: Level2
+  m_Name: Level
   m_EditorClassIdentifier: 
-  tilePrefab: {fileID: 2082110037364603164, guid: 10db48e1c8eb6489ea3365ba2a224af2, type: 3}
-  rows: 3
-  columns: 5
-  ruleNames: 000000000400000007000000
+  tilePrefab: {fileID: 0}
+  rows: 1
+  columns: 1
+  ruleNames: 
   removeRanges: []
   fixedTiles: []
-  numberedTiles:
-  - row: 1
-    column: 1
-    number: 1
-  - row: 3
-    column: 3
-    number: 1
+  numberedTiles: []
