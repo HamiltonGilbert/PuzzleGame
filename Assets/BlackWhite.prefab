@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2082110037364603155}
   - component: {fileID: 2082110037364603154}
   m_Layer: 5
-  m_Name: DefaultTile
+  m_Name: BlackWhite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

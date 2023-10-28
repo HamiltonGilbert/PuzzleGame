@@ -25,6 +25,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler
         this.row = row;
         this.column = column;
         this.solve = solve;
+        UpdateTile();
     }
     public void OnPointerDown(PointerEventData eventData)
     {
