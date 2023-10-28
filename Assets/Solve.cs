@@ -57,10 +57,11 @@ public class Solve
 
     private Func<GridData, bool>[] GetRules(LevelData levelData)
     {
-        rules = new Func<GridData, bool>[levelData.ruleNames.Length];
+        rules = new Func<GridData, bool>[levelData.GetRules().Length];
         for (int i = 0; i < rules.Length; i++)
         {
-            rules[i] = (Func<GridData, bool>)Delegate.CreateDelegate(typeof(Func<GridData, bool>), typeof(Rules).GetMethod(levelData.ruleNames[i].ToString()));
+            Debug.Log(levelData.GetRules()[i]);
+            rules[i] = (Func<GridData, bool>)Delegate.CreateDelegate(typeof(Func<GridData, bool>), typeof(Rules).GetMethod(levelData.GetRules()[i].ToString()));
         }
         return rules;
     }

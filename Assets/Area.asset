@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4d61b2f7797d445ebe370383f994386, type: 3}
   m_Name: Area
   m_EditorClassIdentifier: 
-  ruleNames: 
-  levelDatas: []
+  tilePrefab: {fileID: 2082110037364603164, guid: 10db48e1c8eb6489ea3365ba2a224af2, type: 3}
+  ruleNames: 0600000005000000
+  levelDatas:
+  - {fileID: 11400000, guid: 576c6308d11ea49d48460809627e5e5b, type: 2}
+  - {fileID: 11400000, guid: a9e795a7b49144064a72eef2e04c964a, type: 2}

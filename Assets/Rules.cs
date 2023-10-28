@@ -7,7 +7,7 @@ using static Helpers;
 public static class Rules
 {
     public enum RuleName { HasFiveBlack, LessThanSevenBlack, LessThanSevenWhite, NoSingleBlack,
-        AllBlackConnected, NoFourInARowBlack, NoThreeInADiagonalBlack,
+        AllBlackConnected, NoFourInARowBlack, NoThreeInARowBlack, NoThreeInADiagonalBlack,
         SameNumbersConnected, NoDifferentNumbersConnected, NumbersAreaSize
     };
 
@@ -167,6 +167,62 @@ public static class Rules
                                 return false;
                         }
                         
+                    }
+                }
+            }
+        //vertical
+        if (gridData.gridState.Length > numberInARow)
+            for (int r = 0; r < gridData.gridState.Length - (numberInARow - 1); r++)
+            {
+                for (int c = 0; c < gridData.gridState[r].Length; c++)
+                {
+                    if (gridData.gridState[r][c] != null)
+                    {
+                        if ((bool)gridData.gridState[r][c])
+                        {
+                            bool result = true;
+                            int[][] tilesToCheck = GetTilesInDirection(new int[] { r, c }, new int[] { 1, 0 }, (numberInARow - 1));
+                            //int[][] tilesToCheck = { new int[] { r + 1, c }, new int[] { r + 2, c }, new int[] { r + 3, c } };
+                            if (AreViableTiles(gridData.gridState, tilesToCheck))
+                                foreach (int[] tile in tilesToCheck)
+                                    result &= (bool)gridData.GetState(tile);
+                            else
+                                result = false;
+                            if (result)
+                                return false;
+                        }
+                    }
+                }
+            }
+        return true;
+    }
+    public static bool NoThreeInARowBlack(GridData gridData)
+    {
+        // replace once general functions that take an input are introduced
+        int numberInARow = 3;
+
+        // horizontal
+        if (gridData.gridState[0].Length > numberInARow)
+            for (int r = 0; r < gridData.gridState.Length; r++)
+            {
+                for (int c = 0; c < gridData.gridState[r].Length - (numberInARow - 1); c++)
+                {
+                    if (gridData.gridState[r][c] != null)
+                    {
+                        if ((bool)gridData.gridState[r][c])
+                        {
+                            bool result = true;
+                            int[][] tilesToCheck = GetTilesInDirection(new int[] { r, c }, new int[] { 0, 1 }, (numberInARow - 1));
+                            //int[][] tilesToCheck = { new int[] { r, c + 1 }, new int[] { r, c + 2 }, new int[] { r, c + 3 } };
+                            if (AreViableTiles(gridData.gridState, tilesToCheck))
+                                foreach (int[] tile in tilesToCheck)
+                                    result &= (bool)gridData.GetState(tile);
+                            else
+                                result = false;
+                            if (result)
+                                return false;
+                        }
+
                     }
                 }
             }

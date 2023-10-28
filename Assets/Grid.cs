@@ -22,13 +22,13 @@ public class Grid : MonoBehaviour
         // initialize
         rows = levelData.rows;
         columns = levelData.columns;
-        tilePrefab = levelData.tilePrefab;
+        tilePrefab = levelData.GetTile();
 
         // create Solve
         Solve solve = new(levelData, levelManager);
 
-        // create physical grid
-        int tileDimensions = TileDimensions(rows, columns);
+            // create physical grid
+            int tileDimensions = TileDimensions(rows, columns);
         float tileScale = tileDimensions / 100f;
         int xPos = (columns * -1 * tileDimensions / 2) + tileDimensions / 2;
         int yPos = (rows * tileDimensions / 2) - tileDimensions / 2;

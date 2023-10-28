@@ -5,8 +5,8 @@ using static Rules;
 [CreateAssetMenu(fileName = "Level", menuName = "LevelData", order = 1)]
 public class LevelData : ScriptableObject
 {
-    public GameObject tilePrefab;
-    public RuleName[] ruleNames = new RuleName[0];
+    private GameObject tilePrefab;
+    private RuleName[] ruleNames = new RuleName[0];
     public int rows = 1;
     public int columns = 1;
     public Remove[] removeRanges;
@@ -14,7 +14,9 @@ public class LevelData : ScriptableObject
     public Numbered[] numberedTiles;
 
     public void SetRules(RuleName[] ruleNames) { this.ruleNames = ruleNames; }
+    public RuleName[] GetRules() { return ruleNames; }
     public void SetTile(GameObject tilePrefab) { this.tilePrefab = tilePrefab; }
+    public GameObject GetTile() { return tilePrefab; }
 
     [Serializable]
     public struct Remove
