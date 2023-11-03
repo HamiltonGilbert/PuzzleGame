@@ -6,7 +6,7 @@ using static Helpers;
 
 public static class Rules
 {
-    public enum RuleName { HasFiveBlack, LessThanSevenBlack, LessThanSevenWhite, NoSingleBlack,
+    public enum RuleName { HasFiveBlack, LessThanSevenBlack, LessThanSevenWhite, AtLeastHalfBlack, NoSingleBlack,
         AllBlackConnected, NoFourInARowBlack, NoThreeInARowBlack, NoThreeInADiagonalBlack,
         SameNumbersConnected, NoDifferentNumbersConnected, NumbersAreaSize
     };
@@ -66,6 +66,26 @@ public static class Rules
             return true;
         return false;
     }
+    public static bool AtLeastHalfBlack(GridData gridData)
+    {
+        int goalNumber = (gridData.gridState.Length * gridData.gridState[0].Length) / 2;
+        int blackTiles = 0;
+        for (int r = 0; r < gridData.gridState.Length; r++)
+        {
+            for (int c = 0; c < gridData.gridState[r].Length; c++)
+            {
+                if (gridData.gridState[r][c] != null)
+                {
+                    if ((bool)gridData.gridState[r][c])
+                        blackTiles++;
+                    if (blackTiles == goalNumber)
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+    // BLACK CONNECTED
     public static bool NoSingleBlack(GridData gridData)
     {
         for (int r = 0; r < gridData.gridState.Length; r++)
@@ -92,7 +112,6 @@ public static class Rules
         }
         return true;
     }
-    // BLACK CONNECTED
     public static bool AllBlackConnected(GridData gridData)
     {
         // get black tile to start
@@ -315,6 +334,8 @@ public static class Rules
         }
         return true;
     }
+    // MIRROR
+    
     // NUMBERS
     public static bool SameNumbersConnected(GridData gridData)
     {
