@@ -18,7 +18,6 @@ public class AreaData : ScriptableObject
             levelData.SetRules(ruleNames);
             levelData.SetTile(tilePrefab);
         }
-            
     }
 }
 

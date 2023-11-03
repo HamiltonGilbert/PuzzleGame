@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: Area
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 2082110037364603164, guid: 97e3e71b639454b10aecdcb7d3bba41b, type: 3}
-  ruleNames: 0900000008000000
+  ruleNames: 090000000a000000
   levelDatas:
-  - {fileID: 11400000, guid: dcf1bc955058d429e82660f94c240a4c, type: 2}
   - {fileID: 11400000, guid: 576c6308d11ea49d48460809627e5e5b, type: 2}
   - {fileID: 11400000, guid: a9e795a7b49144064a72eef2e04c964a, type: 2}
