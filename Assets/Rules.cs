@@ -8,7 +8,7 @@ public static class Rules
 {
     public enum RuleName { HasFiveBlack, LessThanSevenBlack, LessThanSevenWhite, AtLeastHalfBlack, NoSingleBlack,
         AllBlackConnected, NoFourInARowBlack, NoThreeInARowBlack, NoThreeInADiagonalBlack,
-        MirrorY,
+        MirrorY, MirrorX, MirrorXY,
         SameNumbersConnected, NoDifferentNumbersConnected, NumbersAreaSize
     };
 
@@ -339,9 +339,9 @@ public static class Rules
     public static bool MirrorY(GridData gridData)
     {
         int gridWidth = gridData.gridState[0].Length;
-        int halfGridWidth = gridWidth/2;
-        for (int j = 0; j < gridData.gridState.Length; j++)
-            for (int i = 0; i < halfGridWidth; i++)
+        int halfGridWidth = gridWidth / 2;
+        for (int j = 0; j < halfGridWidth; j++)
+            for (int i = 0; i < gridData.gridState.Length; i++)
                 if (gridData.gridState[i][j] != gridData.gridState[i][gridWidth - (j + 1)])
                     return false;
         return true;
@@ -350,9 +350,9 @@ public static class Rules
     {
         int gridHeight = gridData.gridState.Length;
         int halfGridHeight = gridHeight / 2;
-        for (int i = 0; i < gridData.gridState.Length; i++)
-            for (int j = 0; j < halfGridHeight; j++)
-                if (gridData.gridState[i][j] != gridData.gridState[i][gridHeight - (j + 1)])
+        for (int j = 0; j < gridData.gridState[0].Length; j++)
+            for (int i = 0; i < halfGridHeight; i++)
+                if (gridData.gridState[i][j] != gridData.gridState[gridHeight - (i + 1)][j])
                     return false;
         return true;
     }
@@ -362,9 +362,9 @@ public static class Rules
         int halfGridWidth = gridWidth / 2;
         int gridHeight = gridData.gridState.Length;
         int halfGridHeight = gridHeight / 2;
-        for (int i = 0; i < gridData.gridState.Length; i++)
+        for (int i = 0; i < halfGridHeight; i++)
             for (int j = 0; j < halfGridWidth; j++)
-                if (gridData.gridState[i][j] != gridData.gridState[i][gridWidth - (j + 1)])
+                if (gridData.gridState[i][j] != gridData.gridState[gridHeight - (i + 1)][gridWidth - (j + 1)])
                     return false;
         return true;
     }
