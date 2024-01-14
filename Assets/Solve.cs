@@ -61,6 +61,7 @@ public class Solve
         for (int i = 0; i < rules.Length; i++)
         {
             Debug.Log(levelData.GetRules()[i]);
+
             rules[i] = (Func<GridData, bool>)Delegate.CreateDelegate(typeof(Func<GridData, bool>), typeof(Rules).GetMethod(levelData.GetRules()[i].ToString()));
         }
         return rules;

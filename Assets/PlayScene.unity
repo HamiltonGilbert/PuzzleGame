@@ -1535,7 +1535,7 @@ PrefabInstance:
     - target: {fileID: 1038398966163220606, guid: 2e3727922b6fe4e9bb1384e54917621f, type: 3}
       propertyPath: areaDatas.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: 2384b8b53449d4385b1d373ca25b77fb, type: 2}
+      objectReference: {fileID: 11400000, guid: 95ffba933426f4d34a4794adeb79527e, type: 2}
     - target: {fileID: 1038398966163220606, guid: 2e3727922b6fe4e9bb1384e54917621f, type: 3}
       propertyPath: areaDatas.Array.data[1]
       value: 

@@ -1,5 +1,8 @@
 
 TODO:
+- Research refactoring and efficient memory usage, apply to puzzle game
+- Create puzzle game demo
+- look into puzzle design for better levels
 - keep track of move history for undo button
 - finish testing first area
 - implement final level in area where there is just one big bar for all the rules instead of individual
@@ -18,7 +21,6 @@ Later TODO:
 - make art for rules (figure out what kind of symbols to use)
 - make art for numbered tiles (switch to shapes maybe?)
 - make more levels
-- look into puzzle design for better levels
 - make puzzles that relate to numbered tiles, removed tiles, and fixed tiles
 - allow player to click and drag to set tiles
 	- decide what color to set tiles with a drag based on the tile originally pressed (eg clicking and dragging from a white tile sets tiles to black)

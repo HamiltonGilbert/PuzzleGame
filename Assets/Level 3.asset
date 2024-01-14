@@ -19,9 +19,6 @@ MonoBehaviour:
   - row: 1
     column: 1
     state: 0
-  - row: 1
-    column: 3
-    state: 0
   - row: 2
     column: 2
     state: 0
